@@ -1,41 +1,48 @@
-## k8-controller-pod-deletion
+### k8-controller-pod-deletion
 This controller uses k8 shell operator to bypass having to code in Golang
 and directly use shell to monitor k8 pod events and react to it.
 
-### Run
+### Run & Test
 
-Build shell-operator image with custom script:
+Change env variable in shell-operator-rbac.yaml to whatever pod names you want to target:
 
-## Replace locahlhost:5000/ by your registry name
+env:
+    - name: TARGET
+      value: "termination"
+
+Will terminate any completed pods that include "termination" in its name (We use https://k8s.io/examples/debug/termination.yaml as a test example)
+
+## Build operator image and push to your registry
 ```
-docker build -t "localhost:5000/shell-operator:monitor-pods" .    
-docker push localhost:5000/shell-operator:monitor-pods
+docker build -t "remyuilicious/k8control:delete-pods" .    
+docker push remyuilicious/k8control:delete-pods
 ```
 
-Edit image in shell-operator-pod.yaml and apply manifests:
+## Create namespace if necessary and deploy pod
 
 ```
-kubectl create ns example-namespacewith-pods
-kubectl -n example-namespacewith-pods apply -f shell-operator-rbac.yaml  
+kubectl create ns test-delete-pods
+kubectl -n test-delete-pods apply -f shell-operator-rbac.yaml  
 ```
 
-Deploy a pod (example with a failing pod for testing purpose):
+Deploy a test od (example with a failing pod for testing purpose):
 
 ```
 kubectl -n  test-delete-pods apply -f https://git.io/vPieo
+or 
+kubectl -n test-delete-pods  apply -f https://k8s.io/examples/debug/termination.yaml
 ```
 
 See in logs that hook was run:
 
 ```
-kubectl get pods --namespace=example-namespacewith-pods
-kubectl -n example-namespacewith-pods logs po/shell-operator > logs.txt
+kubectl get pods --namespace=test-delete-pods
+kubectl -n test-delete-pods logs po/shell-operator > logs.txt
 ```
 
 ### cleanup of testing env /!\ DONT DO IT ON PROD
 ```
 kubectl delete clusterrolebinding/monitor-pods
 kubectl delete clusterrole/monitor-pods
-kubectl delete ns/example-namespacewith-pods
-docker rmi localhost:5000/shell-operator:monitor-pods
+kubectl delete ns/test-delete-pods
 ```

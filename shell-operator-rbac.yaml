@@ -44,5 +44,7 @@ spec:
     imagePullPolicy: Always
     env:
       - name: TARGET
-        value: "termination"
+        value: ""
+      - name: DEBUG
+        value: "true"
   serviceAccountName: monitor-pods-acc

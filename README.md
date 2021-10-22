@@ -2,14 +2,14 @@
 This controller uses k8 shell operator to bypass having to code in Golang
 and directly use shell to monitor k8 pod events and react to it.
 
-### Run & Test
+### Setup
 
 ## ENV Variables
-env:
-# Set target to a string or regex, hook will only trigger if pod's name matchs target
+
+Set target to a string or regex, hook will only trigger if pod's name matchs target
     - name: TARGET
       value: "termination"
-# Set debug to "true" if you just want logs when the hook triggers
+Set debug to "true" if you just want logs when the hook triggers
     - name: DEBUG
       value: "true" 
 
@@ -18,6 +18,7 @@ env:
 docker build -t "remyuilicious/k8control:delete-pods" .    
 docker push remyuilicious/k8control:delete-pods
 ```
+### Run & Test
 
 ## Create namespace if necessary and deploy pod
 
@@ -44,7 +45,7 @@ kubectl get pods --namespace=test-delete-pods
 kubectl -n test-delete-pods logs po/shell-operator > logs.txt
 ```
 
-### cleanup of testing env /!\ DONT DO IT ON PROD
+### cleanup of testing env 
 ```
 kubectl delete clusterrolebinding/monitor-pods
 kubectl delete clusterrole/monitor-pods

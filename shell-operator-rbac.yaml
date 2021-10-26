@@ -3,14 +3,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: monitor-pods-acc
-  namespace:  test-delete-pods
+  namespace: default
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: monitor-pods
-  namespace:  test-delete-pods
+  namespace: default
 rules:
 - apiGroups: [""]
   resources: ["pods"]
@@ -21,7 +21,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: monitor-pods
-  namespace:  test-delete-pods
+  namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -29,14 +29,14 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: monitor-pods-acc
-    namespace:  test-delete-pods
+    namespace: default
 
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: shell-operator
-  namespace:  test-delete-pods
+  namespace: default
 spec:
   containers:
   - name: shell-operator

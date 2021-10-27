@@ -24,7 +24,7 @@ docker push remyuilicious/k8control:delete-pods
 
 ```
 kubectl create ns test-delete-pods
-kubectl -n test-delete-pods apply -f shell-operator-rbac.yaml  
+kubectl -n test-delete-pods1 apply -f shell-operator-rbac.yaml  
 ```
 
 Deploy a test od (example with a failing pod for testing purpose):
@@ -34,7 +34,9 @@ Deploy a test od (example with a failing pod for testing purpose):
 ```
 kubectl -n  test-delete-pods apply -f https://git.io/vPieo
 or 
-kubectl -n test-delete-pods  apply -f https://k8s.io/examples/debug/termination.yaml
+kubectl -n test-delete-pods2  apply -f https://k8s.io/examples/debug/termination.yaml
+or 
+test from inside a pod (suicide): kill -SIGTERM 1
 ```
 
 Check pods status in namespace and 
@@ -42,12 +44,13 @@ see in logs that hook was run:
 
 ```
 kubectl get pods --namespace=test-delete-pods
-kubectl -n test-delete-pods logs po/shell-operator > logs.txt
+kubectl -n test-delete-pods1 logs po/pod-reaper > logs.txt
 ```
 
 ### cleanup of testing env 
 ```
-kubectl delete clusterrolebinding/monitor-pods
-kubectl delete clusterrole/monitor-pods
+kubectl delete clusterrolebinding/reap-pods
+kubectl delete clusterrole/reap-pods
 kubectl delete ns/test-delete-pods
 ```
+

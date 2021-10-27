@@ -10,6 +10,7 @@ kubernetes:
   - Modified
 EOF
 else
+  #namespace=$(jq -r '.[0].object.metadata.namespace' ${BINDING_CONTEXT_PATH})
   podName=$(jq -r '.[0].object.metadata.name' ${BINDING_CONTEXT_PATH})
   podReason=$(jq -r '.[0].object.status.containerStatuses[0].state.terminated.reason' ${BINDING_CONTEXT_PATH}) #${BINDING_CONTEXT_PATH} is a path to .json file
   if [[ $podReason == *'Unhealthy'* ]]; then

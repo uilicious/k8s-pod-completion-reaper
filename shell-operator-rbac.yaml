@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: monitor-pods-acc
+  name: reaper-pods-acc
   namespace: default
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
-  name: monitor-pods
+  name: reap-pods
   namespace: default
 rules:
 - apiGroups: [""]
@@ -18,33 +18,35 @@ rules:
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: monitor-pods
+  name: reap-pods
   namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: monitor-pods
+  kind: Role
+  name: reap-pods
 subjects:
   - kind: ServiceAccount
-    name: monitor-pods-acc
+    name: reaper-pods-acc
     namespace: default
 
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: shell-operator
+  name: pod-reaper
   namespace: default
 spec:
   containers:
-  - name: shell-operator
+  - name: pod-reaper
     image: remyuilicious/k8control:delete-pods
     imagePullPolicy: Always
     env:
-      - name: TARGET
+      - name: TARGETNAMESPACE
+        value: ""
+      - name: TARGETPOD
         value: ""
       - name: DEBUG
-        value: "true"
-  serviceAccountName: monitor-pods-acc
+        value: "false"
+  serviceAccountName: reaper-pods-acc

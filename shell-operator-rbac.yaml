@@ -3,14 +3,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: reaper-pods-acc
-  namespace: default
+  namespace: test-delete-pods1
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: reap-pods
-  namespace: default
+  namespace: test-delete-pods1
 rules:
 - apiGroups: [""]
   resources: ["pods"]
@@ -21,7 +21,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: reap-pods
-  namespace: default
+  namespace: test-delete-pods1
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -29,14 +29,14 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: reaper-pods-acc
-    namespace: default
+    namespace: test-delete-pods1
 
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: pod-reaper
-  namespace: default
+  namespace: test-delete-pods1
 spec:
   containers:
   - name: pod-reaper
@@ -44,7 +44,7 @@ spec:
     imagePullPolicy: Always
     env:
       - name: TARGETNAMESPACE
-        value: ""
+        value: "test-delete-pods1"
       - name: TARGETPOD
         value: ""
       - name: DEBUG

@@ -5,9 +5,11 @@ and directly use shell to monitor k8 pod events and react to it.
 ### Setup
 
 ## ENV Variables
-
+Set target namespace for event listening
+    - name: TARGETNAMESPACE
+      value: "test-ns"
 Set target to a string or regex, hook will only trigger if pod's name matchs target
-    - name: TARGET
+    - name: TARGETPOD
       value: "termination"
 Set debug to "true" if you just want logs when the hook triggers
     - name: DEBUG
@@ -23,8 +25,8 @@ docker push remyuilicious/k8control:delete-pods
 ## Create namespace if necessary and deploy pod
 
 ```
-kubectl create ns test-delete-pods
-kubectl -n test-delete-pods1 apply -f shell-operator-rbac.yaml  
+kubectl create ns test-ns
+kubectl -n test-ns apply -f shell-operator-rbac.yaml  
 ```
 
 Deploy a test od (example with a failing pod for testing purpose):
@@ -32,9 +34,9 @@ Deploy a test od (example with a failing pod for testing purpose):
 1) busybox image - will sleep 1h
 2) Termination pod - will directly crash
 ```
-kubectl -n  test-delete-pods apply -f https://git.io/vPieo
+kubectl -n  test-ns apply -f https://git.io/vPieo
 or 
-kubectl -n test-delete-pods2  apply -f https://k8s.io/examples/debug/termination.yaml
+kubectl -n test-ns apply -f https://k8s.io/examples/debug/termination.yaml
 or 
 test from inside a pod (suicide): kill -SIGTERM 1
 ```
@@ -43,14 +45,14 @@ Check pods status in namespace and
 see in logs that hook was run:
 
 ```
-kubectl get pods --namespace=test-delete-pods
-kubectl -n test-delete-pods1 logs po/pod-reaper > logs.txt
+kubectl get pods --namespace=test-delete-pods2
+kubectl -n default test-ns po/pod-reaper > logs.txt
 ```
 
 ### cleanup of testing env 
 ```
 kubectl delete clusterrolebinding/reap-pods
 kubectl delete clusterrole/reap-pods
-kubectl delete ns/test-delete-pods
+kubectl delete ns/test-ns
 ```
 

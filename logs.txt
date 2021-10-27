@@ -1,75 +1,73 @@
-{"level":"info","msg":"shell-operator v1.0.4","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Listen on 0.0.0.0:9115","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric counter shell_operator_live_ticks","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_tasks_queue_action_duration_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric gauge shell_operator_tasks_queue_length","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric gauge shell_operator_kube_snapshot_objects","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric gauge shell_operator_kube_snapshot_bytes","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_kube_jq_filter_duration_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_kube_event_duration_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric gauge shell_operator_hook_enable_kubernetes_bindings_seconds","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric counter shell_operator_hook_enable_kubernetes_bindings_errors_total","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric gauge shell_operator_hook_enable_kubernetes_bindings_success","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_hook_run_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_hook_run_user_cpu_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_hook_run_sys_cpu_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric gauge shell_operator_hook_run_max_rss_bytes","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric counter shell_operator_hook_run_errors_total","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric counter shell_operator_hook_run_allowed_errors_total","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric counter shell_operator_hook_run_success_total","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric counter shell_operator_task_wait_in_queue_seconds_total","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Hooks dir: /hooks","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Use temporary dir: /tmp/shell-operator","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Debug endpoint listen on /var/run/shell-operator/debug.socket","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_kubernetes_client_request_latency_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric counter shell_operator_kubernetes_client_request_result_total","operator.component":"metricStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Kubernetes client is configured successfully with 'out-of-cluster' config","operator.component":"KubernetesAPIClient","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Kubernetes client is configured successfully with 'out-of-cluster' config","operator.component":"KubernetesAPIClient","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Initialize hooks manager. Search for and load all hooks.","time":"2021-10-27T08:06:31Z"}
-{"hook":"pods-hook.sh","level":"info","msg":"Load config from '/hooks/pods-hook.sh'","phase":"config","time":"2021-10-27T08:06:31Z"}
-{"hook":"pods-hook.sh","level":"info","msg":"Loaded config: Watch k8s kinds: 'Pod'","phase":"config","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"start shell-operator","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"queue task EnableKubernetesBindings:::pods-hook.sh:EnableKubernetesBindings for hook pods-hook.sh","operator.component":"initMainQueue","time":"2021-10-27T08:06:31Z"}
-{"binding":"","hook":"pods-hook.sh","level":"info","msg":"Enable kubernetes binding for hook","queue":"main","task":"EnableKubernetesBindings","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_kubernetes_client_rate_limiter_latency_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"binding":"","hook":"pods-hook.sh","level":"info","msg":"Kubernetes bindings for hook are enabled successfully, 1 tasks generated","queue":"main","task":"EnableKubernetesBindings","time":"2021-10-27T08:06:31Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:06:31Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:0s User:21.554ms MaxRss:37508}","queue":"main","task":"HookRun","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_hook_run_sys_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"level":"info","msg":"Create metric histogram shell_operator_hook_run_user_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:06:31Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:06:31Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Unlock kubernetes.Event tasks","queue":"main","task":"HookRun","time":"2021-10-27T08:06:31Z"}
-{"binding":"kubernetes","event.id":"e3d67ad9-9729-4185-98dd-b682c96d260d","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"89631df6-eaf4-4ad0-add6-63e4e67714a4","time":"2021-10-27T08:06:46Z"}
-{"binding":"kubernetes","event.id":"7636c54c-1167-44e0-b525-2fd56decb2e0","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"9d78aa24-ba10-4e82-b070-9b1773139bf3","time":"2021-10-27T08:06:46Z"}
-{"level":"info","msg":"Binding contexts from 2 tasks are combined to 2 contexts. 1 tasks are dropped from queue 'main'","time":"2021-10-27T08:06:46Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:06:46Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:0s User:10.345ms MaxRss:37508}","queue":"main","task":"HookRun","time":"2021-10-27T08:06:46Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:06:46Z"}
-{"binding":"kubernetes","event.id":"173f35c6-34b4-4da8-b4e9-48d7ccf41edd","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"6b4b9e5b-53ac-47b8-b309-2b4ddac5203d","time":"2021-10-27T08:06:51Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:06:51Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:0s User:8.527ms MaxRss:37508}","queue":"main","task":"HookRun","time":"2021-10-27T08:06:51Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:06:51Z"}
-{"binding":"kubernetes","event.id":"f31188b9-e8b8-49ac-93e8-336924a14f5d","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"76d23ad6-f070-4d92-bcac-f2286f68759b","time":"2021-10-27T08:07:01Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:07:01Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Error from server (NotFound): pods \"termination-demo\" not found","output":"stderr","queue":"main","task":"HookRun","time":"2021-10-27T08:07:01Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"ACTION - target is entier namespace, deleting pod termination-demo, reason: Completed","output":"stdout","queue":"main","task":"HookRun","time":"2021-10-27T08:07:01Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:116.602ms User:125.407ms MaxRss:44888}","queue":"main","task":"HookRun","time":"2021-10-27T08:07:01Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:07:01Z"}
-{"binding":"kubernetes","event.id":"78cda6cb-df46-46fd-9df3-e1102454e3ea","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"b5f6a331-f0cb-4cf4-8fe9-4c6cee2934c9","time":"2021-10-27T08:07:05Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:07:05Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:2.969ms User:5.022ms MaxRss:37508}","queue":"main","task":"HookRun","time":"2021-10-27T08:07:05Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:07:05Z"}
-{"binding":"kubernetes","event.id":"6225e505-2fca-4337-9ac1-d2c67843a014","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"ef461923-7de8-4c17-8f25-5d6056d6f43b","time":"2021-10-27T08:07:15Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:07:15Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Error from server (NotFound): pods \"termination-demo\" not found","output":"stderr","queue":"main","task":"HookRun","time":"2021-10-27T08:07:15Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"ACTION - target is entier namespace, deleting pod termination-demo, reason: Completed","output":"stdout","queue":"main","task":"HookRun","time":"2021-10-27T08:07:15Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:26.222ms User:99.508ms MaxRss:44464}","queue":"main","task":"HookRun","time":"2021-10-27T08:07:15Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:07:15Z"}
-{"binding":"kubernetes","event.id":"6a022710-be3a-4080-8eda-3c311335abdb","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"246a7971-a6e3-4a99-a793-ca4bc4f3ef77","time":"2021-10-27T08:07:26Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:07:26Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:3.432ms User:5.055ms MaxRss:37508}","queue":"main","task":"HookRun","time":"2021-10-27T08:07:26Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:07:26Z"}
-{"binding":"kubernetes","event.id":"9cf5efb5-9b66-494f-b726-6abf030e7679","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"b1c5a790-8cc5-43a8-b814-b122669787d1","time":"2021-10-27T08:07:30Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:07:30Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:0s User:8.279ms MaxRss:37508}","queue":"main","task":"HookRun","time":"2021-10-27T08:07:30Z"}
-{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:07:30Z"}
+{"level":"info","msg":"shell-operator v1.0.4","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Listen on 0.0.0.0:9115","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric counter shell_operator_live_ticks","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_tasks_queue_action_duration_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric gauge shell_operator_tasks_queue_length","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric gauge shell_operator_kube_snapshot_objects","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric gauge shell_operator_kube_snapshot_bytes","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_kube_jq_filter_duration_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_kube_event_duration_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric gauge shell_operator_hook_enable_kubernetes_bindings_seconds","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric counter shell_operator_hook_enable_kubernetes_bindings_errors_total","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric gauge shell_operator_hook_enable_kubernetes_bindings_success","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_hook_run_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_hook_run_user_cpu_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_hook_run_sys_cpu_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric gauge shell_operator_hook_run_max_rss_bytes","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric counter shell_operator_hook_run_errors_total","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric counter shell_operator_hook_run_allowed_errors_total","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric counter shell_operator_hook_run_success_total","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric counter shell_operator_task_wait_in_queue_seconds_total","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Hooks dir: /hooks","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Use temporary dir: /tmp/shell-operator","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Debug endpoint listen on /var/run/shell-operator/debug.socket","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_kubernetes_client_request_latency_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric counter shell_operator_kubernetes_client_request_result_total","operator.component":"metricStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Kubernetes client is configured successfully with 'out-of-cluster' config","operator.component":"KubernetesAPIClient","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Kubernetes client is configured successfully with 'out-of-cluster' config","operator.component":"KubernetesAPIClient","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Initialize hooks manager. Search for and load all hooks.","time":"2021-10-27T08:59:58Z"}
+{"hook":"pods-hook.sh","level":"info","msg":"Load config from '/hooks/pods-hook.sh'","phase":"config","time":"2021-10-27T08:59:58Z"}
+{"hook":"pods-hook.sh","level":"info","msg":"Loaded config: Watch k8s kinds: 'Pod'","phase":"config","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"start shell-operator","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"queue task EnableKubernetesBindings:::pods-hook.sh:EnableKubernetesBindings for hook pods-hook.sh","operator.component":"initMainQueue","time":"2021-10-27T08:59:58Z"}
+{"binding":"","hook":"pods-hook.sh","level":"info","msg":"Enable kubernetes binding for hook","queue":"main","task":"EnableKubernetesBindings","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_kubernetes_client_rate_limiter_latency_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"binding":"","hook":"pods-hook.sh","level":"info","msg":"Kubernetes bindings for hook are enabled successfully, 1 tasks generated","queue":"main","task":"EnableKubernetesBindings","time":"2021-10-27T08:59:58Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:59:58Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:0s User:12.708ms MaxRss:33828}","queue":"main","task":"HookRun","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_hook_run_sys_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"level":"info","msg":"Create metric histogram shell_operator_hook_run_user_seconds","operator.component":"metricsStorage","time":"2021-10-27T08:59:58Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:59:58Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Unlock kubernetes.Event tasks","queue":"main","task":"HookRun","time":"2021-10-27T08:59:58Z"}
+{"binding":"kubernetes","event.id":"7378b761-4b27-40af-a4fc-ebd4008e23b6","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"65dff74f-1496-447e-ab01-a188bc400aa6","time":"2021-10-27T08:59:58Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T08:59:58Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:0s User:8.828ms MaxRss:34300}","queue":"main","task":"HookRun","time":"2021-10-27T08:59:58Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T08:59:58Z"}
+{"binding":"kubernetes","event.id":"a48fc216-a2b5-4d82-ad76-7ff23955e514","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"3d2da3e2-663f-414f-a641-cf26191cd0b2","time":"2021-10-27T09:00:45Z"}
+{"binding":"kubernetes","event.id":"3e8ea35b-4938-41bd-b9a5-db53b7882122","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"fcfa82ee-bb34-4ed6-a1f9-3ddcdcf933aa","time":"2021-10-27T09:00:45Z"}
+{"level":"info","msg":"Binding contexts from 2 tasks are combined to 2 contexts. 1 tasks are dropped from queue 'main'","time":"2021-10-27T09:00:45Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T09:00:45Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:3.832ms User:6.844ms MaxRss:34720}","queue":"main","task":"HookRun","time":"2021-10-27T09:00:45Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T09:00:45Z"}
+{"binding":"kubernetes","event.id":"76ce5d1f-a38d-4123-aded-ab1da856793a","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"f6da63d2-24de-46f7-987d-69acbdaaa781","time":"2021-10-27T09:00:50Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T09:00:50Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:0s User:9.783ms MaxRss:34720}","queue":"main","task":"HookRun","time":"2021-10-27T09:00:50Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T09:00:50Z"}
+{"binding":"kubernetes","event.id":"41c173d4-1ab7-449d-96f3-aefe828b77dc","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"9d6314ed-ae3e-44f1-aff7-6a02c75d1659","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"pod \"termination-demo\" deleted","output":"stdout","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event.id":"1d039364-b24c-40b2-8b48-da0afe949475","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"fd40c167-6912-468c-a135-a84ec7819950","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"ACTION - target is entier namespace, deleting pod termination-demo, reason: Completed","output":"stdout","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:89.022ms User:99.503ms MaxRss:43512}","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"pod \"termination-demo\" deleted","output":"stdout","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"ACTION - target is entier namespace, deleting pod termination-demo, reason: Completed","output":"stdout","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:86.204ms User:33.357ms MaxRss:42696}","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T09:01:00Z"}
+{"binding":"kubernetes","event.id":"30dfab62-161f-4384-88e7-d572e1d8bae1","level":"info","msg":"queue task HookRun:main:kubernetes:pods-hook.sh:kubernetes","operator.component":"handleEvents","queue":"main","task.id":"24d8b9ec-89ee-441a-8ad7-3826da4127e7","time":"2021-10-27T09:01:05Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Execute hook","queue":"main","task":"HookRun","time":"2021-10-27T09:01:05Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Error from server (NotFound): pods \"termination-demo\" not found","output":"stderr","queue":"main","task":"HookRun","time":"2021-10-27T09:01:05Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"ACTION - target is entier namespace, deleting pod termination-demo, reason: Completed","output":"stdout","queue":"main","task":"HookRun","time":"2021-10-27T09:01:05Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Usage: \u0026{Sys:54.535ms User:70.355ms MaxRss:44168}","queue":"main","task":"HookRun","time":"2021-10-27T09:01:05Z"}
+{"binding":"kubernetes","event":"kubernetes","hook":"pods-hook.sh","level":"info","msg":"Hook executed successfully","queue":"main","task":"HookRun","time":"2021-10-27T09:01:05Z"}

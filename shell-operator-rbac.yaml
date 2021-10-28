@@ -3,14 +3,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: reaper-pods-acc
-  namespace: test-ns
+  namespace: webdriver-grid-w1dev
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: reap-pods
-  namespace: test-ns
+  namespace: webdriver-grid-w1dev
 rules:
 - apiGroups: [""]
   resources: ["pods"]
@@ -21,7 +21,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: reap-pods
-  namespace: test-ns
+  namespace: webdriver-grid-w1dev
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -29,24 +29,24 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: reaper-pods-acc
-    namespace: test-ns
+    namespace: webdriver-grid-w1dev
 
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: pod-reaper
-  namespace: test-ns
+  namespace: webdriver-grid-w1dev
 spec:
   containers:
   - name: pod-reaper
-    image: localhost:5000/shell-operator:delete-pods
+    image: remyuilicious/k8control:delete-pods
     imagePullPolicy: Always
     env:
       - name: TARGETNAMESPACE
-        value: "test-ns"
+        value: "webdriver-grid-w1dev"
       - name: TARGETPOD
-        value: ""
+        value: "edge2019"
       - name: DEBUG
         value: "false"
       - name: LOG_LEVEL

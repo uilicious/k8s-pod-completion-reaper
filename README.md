@@ -17,8 +17,8 @@ Set debug to "true" if you just want logs when the hook triggers
 
 ## Build operator image and push to your registry
 ```
-docker build -t "remyuilicious/k8control:delete-pods" .    
-docker push remyuilicious/k8control:delete-pods
+docker build -t "localhost:5000/shell-operator:delete-pods" .    
+docker push localhost:5000/shell-operator:delete-pods
 ```
 ### Run & Test
 
@@ -45,14 +45,14 @@ Check pods status in namespace and
 see in logs that hook was run:
 
 ```
-kubectl get pods --namespace=test-delete-pods2
-kubectl -n default test-ns po/pod-reaper > logs.txt
+kubectl get pods --namespace=test-ns
+kubectl -n test-ns logs po/pod-reaper > logs.txt
 ```
 
 ### cleanup of testing env 
 ```
-kubectl delete clusterrolebinding/reap-pods
-kubectl delete clusterrole/reap-pods
+kubectl delete rolebinding/reap-pods
+kubectl delete role/reap-pods
 kubectl delete ns/test-ns
 ```
 

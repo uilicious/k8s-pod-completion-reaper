@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+##
+## This builds on shell-operator : https://github.com/flant/shell-operator
+##
+## Which calls the various shell scripts in /hooks
+## first with "--config" to get the script configuration,
+## and subsequently on every event trigger.
+##
+
 #-----------------------------------------------------------------------------------------
 #
 # This is called once by shell-operator, using the "--config" parameter

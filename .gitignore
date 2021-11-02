@@ -1,2 +1,5 @@
-#ignore debug logs
+# ignore debug logs
 logs.txt
+
+# Ignore common hidden / OS files
+.*

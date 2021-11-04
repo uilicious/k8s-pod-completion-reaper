@@ -90,23 +90,32 @@ If you can access the bash terminal of a pod, you can cause it to terminate on i
 kill -SIGTERM 1
 ```
 
-Alternatively you can deploy a pod, which perodically terminates itself every 30 seconds
+Alternatively you can deploy a pod, which will terminates itself every 30 seconds
 
 ```
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: termination-demo
   namespace: proj-namespace
 spec:
-  containers:
-  - name: termination-demo-container
-    image: debian
-    command: ["/bin/sh"]
-    args: ["-c", "sleep 30 && echo Sleep expired > /dev/termination-log"]
+  selector:
+    matchLabels:
+      app: termination-demo-container
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: termination-demo-container
+    spec:
+      containers:
+      - name: termination-demo-container
+        image: busybox
+        command: ["/bin/sh"]
+        args: ["-c", "sleep 30 && echo 'Sleep expired'"]
 ```
 
-Alternatively use a busybox image - which will sleep 1h
+Alternatively use busybox image itself - and let it sleep for 1h
 
 # Misc: Development Notes
 

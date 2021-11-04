@@ -89,6 +89,8 @@ Because the "object" definition is nearly impossible to find definitively online
 object provided by ".[0].object", you may want to refer to either an existing cluster with `kubectl get pods -o json`
 or alternatively [./notes/example-pod.yaml](./notes/example-pod.yaml).
 
+This uses the APACHE license, to ensure its compatible with the shell-operator its built on.
+
 
 
 

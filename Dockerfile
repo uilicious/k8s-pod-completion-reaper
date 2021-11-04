@@ -3,7 +3,8 @@ FROM flant/shell-operator:latest
 # Add the pods-hook file, and entrypoint script
 ADD hooks /hooks
 ADD entrypoint.sh /entrypoint.sh
-RUN chmod 755 /hooks/*.sh && chmod +x /hooks/*.sh
+RUN chmod 755 /hooks/*.sh && chmod +x /hooks/*.sh && \
+    chmod 755 /entrypoint.sh && chmod +x /entrypoint.sh
 
 # Trigger the entrypoint script
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]

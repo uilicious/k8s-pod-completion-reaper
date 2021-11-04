@@ -1,0 +1,256 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cattle.io/timestamp: "2021-10-29T01:37:53Z"
+  creationTimestamp: "2021-10-29T01:39:27Z"
+  generateName: liveness-58c5f94c68-
+  labels:
+    pod-template-hash: 58c5f94c68
+    workload.user.cattle.io/workloadselector: test-namespace-liveness
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:cattle.io/timestamp: {}
+        f:generateName: {}
+        f:labels:
+          .: {}
+          f:pod-template-hash: {}
+          f:workload.user.cattle.io/workloadselector: {}
+        f:ownerReferences:
+          .: {}
+          k:{"uid":"8e498ac1-fcf7-4181-bd1e-1ed11e0912d4"}:
+            .: {}
+            f:apiVersion: {}
+            f:blockOwnerDeletion: {}
+            f:controller: {}
+            f:kind: {}
+            f:name: {}
+            f:uid: {}
+      f:spec:
+        f:containers:
+          k:{"name":"liveness"}:
+            .: {}
+            f:args: {}
+            f:image: {}
+            f:imagePullPolicy: {}
+            f:livenessProbe:
+              .: {}
+              f:exec:
+                .: {}
+                f:command: {}
+              f:failureThreshold: {}
+              f:initialDelaySeconds: {}
+              f:periodSeconds: {}
+              f:successThreshold: {}
+              f:timeoutSeconds: {}
+            f:name: {}
+            f:readinessProbe:
+              .: {}
+              f:exec:
+                .: {}
+                f:command: {}
+              f:failureThreshold: {}
+              f:initialDelaySeconds: {}
+              f:periodSeconds: {}
+              f:successThreshold: {}
+              f:timeoutSeconds: {}
+            f:resources: {}
+            f:securityContext:
+              .: {}
+              f:allowPrivilegeEscalation: {}
+              f:capabilities: {}
+              f:privileged: {}
+              f:readOnlyRootFilesystem: {}
+              f:runAsNonRoot: {}
+            f:stdin: {}
+            f:terminationMessagePath: {}
+            f:terminationMessagePolicy: {}
+            f:tty: {}
+        f:dnsPolicy: {}
+        f:enableServiceLinks: {}
+        f:imagePullSecrets:
+          .: {}
+          k:{"name":"docker-hub"}:
+            .: {}
+            f:name: {}
+        f:restartPolicy: {}
+        f:schedulerName: {}
+        f:securityContext: {}
+        f:terminationGracePeriodSeconds: {}
+    manager: kube-controller-manager
+    operation: Update
+    time: "2021-10-29T01:39:27Z"
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        f:conditions:
+          k:{"type":"ContainersReady"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Initialized"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Ready"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+        f:containerStatuses: {}
+        f:hostIP: {}
+        f:phase: {}
+        f:podIP: {}
+        f:podIPs:
+          .: {}
+          k:{"ip":"10.244.0.23"}:
+            .: {}
+            f:ip: {}
+        f:startTime: {}
+    manager: kubelet
+    operation: Update
+    time: "2021-10-29T09:53:14Z"
+  name: liveness-58c5f94c68-wqn6b
+  namespace: webdriver-grid-w1dev
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: liveness-58c5f94c68
+    uid: 8e498ac1-fcf7-4181-bd1e-1ed11e0912d4
+  resourceVersion: "606322"
+  uid: 07cf44d6-eea2-4dc5-8e0b-63d2039d1cb6
+spec:
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+    image: busybox
+    imagePullPolicy: Always
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      failureThreshold: 3
+      initialDelaySeconds: 2
+      periodSeconds: 2
+      successThreshold: 1
+      timeoutSeconds: 2
+    name: liveness
+    readinessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      failureThreshold: 3
+      initialDelaySeconds: 2
+      periodSeconds: 2
+      successThreshold: 2
+      timeoutSeconds: 2
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities: {}
+      privileged: false
+      readOnlyRootFilesystem: false
+      runAsNonRoot: false
+    stdin: true
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    tty: true
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-42574
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  imagePullSecrets:
+  - name: docker-hub
+  nodeName: aks-defaultpool-33162729-vmss000000
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: default-token-42574
+    secret:
+      defaultMode: 420
+      secretName: default-token-42574
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2021-10-29T01:39:27Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2021-10-29T09:53:14Z"
+    message: 'containers with unready status: [liveness]'
+    reason: ContainersNotReady
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2021-10-29T09:53:14Z"
+    message: 'containers with unready status: [liveness]'
+    reason: ContainersNotReady
+    status: "False"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2021-10-29T01:39:27Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://d3914816543e6801990e4fce53b32c722e8bd1b78470c6e34c60d8e29109b51e
+    image: docker.io/library/busybox:latest
+    imageID: docker.io/library/busybox@sha256:15e927f78df2cc772b70713543d6b651e3cd8370abf86b2ea4644a9fba21107f
+    lastState:
+      terminated:
+        containerID: containerd://c991c67a1222be7b5d2e6fe65b037f995be27445ecc1ff03cbd830bee9b92d03
+        exitCode: 137
+        finishedAt: "2021-10-29T09:53:43Z"
+        reason: Error
+        startedAt: "2021-10-29T09:52:38Z"
+    name: liveness
+    ready: false
+    restartCount: 139
+    started: true
+    state:
+      running:
+        startedAt: "2021-10-29T09:53:44Z"
+  hostIP: 10.5.2.4
+  phase: Running
+  podIP: 10.244.0.23
+  podIPs:
+  - ip: 10.244.0.23
+  qosClass: BestEffort
+  startTime: "2021-10-29T01:39:27Z"

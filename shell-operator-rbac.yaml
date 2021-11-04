@@ -43,7 +43,7 @@ spec:
     image: remyuilicious/k8control:delete-pods
     imagePullPolicy: Always
     env:
-      - name: TARGETNAMESPACE
+      - name: NAMESPACE
         value: "webdriver-grid-w1dev"
       - name: TARGETPOD
         value: "edge2019"

@@ -1,5 +1,7 @@
 # k8s-pod-completion-reaper
 
+Automatically remove kubernetes pods when they exit / restarts.
+
 This listens to kubernetes event stream, and trigger a pod removal. In event it exits.
 This effectively prevents any form of "pod restarts" from occuring, ensuring any pod startup is done "new".
 

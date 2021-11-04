@@ -71,9 +71,11 @@ POD_NAME=$(echo "$JSON_OBJ_STR" | jq '.metadata.name')
 # Lets skip the pods whose names do not match
 if [[ -z "$TARGETPOD" ]]; then
   # TARGETPOD parameter is empty, match all containers in namespace
+	:
 else
   if [[ "$POD_NAME"=~"$TARGETPOD" ]]; then
     # TARGETPOD matches, we shall permit this event
+		:
   else
     # TARGETPOD does not match, we should skip this event
     if [[ "$DEBUG"=="true "]]; then

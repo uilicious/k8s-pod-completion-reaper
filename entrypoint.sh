@@ -8,8 +8,7 @@ fi
 
 if [ -z "$TARGET_POD" ]
 then
-      echo "# [CRITICAL-ISSUE] Missing required 'TARGETPOD' environment variable"
-      exit 1
+      echo "# [WARNING] Missing required 'TARGETPOD' environment variable - this will match against all pods in the namespace"
 fi
 
 # Startup the shell operator

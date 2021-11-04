@@ -78,7 +78,7 @@ else
 		:
   else
     # TARGETPOD does not match, we should skip this event
-    if [[ "$DEBUG"=="true "]]; then
+    if [[ "$DEBUG"=="true" ]]; then
       echo "DEBUG - skipping ${POD_NAME} as it does not match TARGETPOD regex : $TARGETPOD"
     fi
     exit 0

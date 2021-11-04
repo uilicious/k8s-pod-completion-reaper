@@ -2,12 +2,12 @@ FROM flant/shell-operator:latest
 
 # Add the pods-hook file, and entrypoint script
 ADD hooks /hooks
-ADD entrypoint.sh /entrypoint.sh
+ADD operator /operator
 RUN chmod 755 /hooks/*.sh && chmod +x /hooks/*.sh && \
-    chmod 755 /entrypoint.sh && chmod +x /entrypoint.sh
+    chmod 755 /operator/*.sh && chmod +x /operator/*.sh &&
 
 # Trigger the entrypoint script
-ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/operator/entrypoint.sh"]
 CMD []
 
 #
@@ -47,3 +47,48 @@ ENV DEBUG="false"
 # default="error"
 #
 ENV LOG_LEVEL="error"
+
+#
+# Enable the use of the main shell-operator workflow
+# This helps react to event quicker in a "live" manner for pod completion events, 
+# however seems to sometimes "miss" event based on our observations in the field.
+#
+# default="true"
+#
+ENV SHELL_OPERATOR_ENABLE="true"
+
+#
+# Enable the inbuilt kubectl fallback behaviour
+# This uses kubectl on a polling basis, to apply the pod reaper rules
+# as such, it may potentially be delayed by the "polling interval" setting.
+#
+# This also introduces some advance behaviour, like terminating unhealthy nodes
+#
+# default="true"
+#
+ENV KUBECTL_FALLBACK_ENABLE="true"
+
+#
+# Polling interval to be used in bewtween scans, note that actual interval
+# maybe significant longer if the kubectl commands are "slow"
+#
+# default="30s"
+#
+ENV KUBECTL_POLLING_INTERVAL="30s"
+
+#
+# Pre-emptively perform pod termination on unhelathy nodes older thant the stated min age
+# this helps quicken the overal pod termination, and replacement process.
+# 
+# Minimum age is used to work around race conditions, where a pod is "unhealthy" at start
+#
+# default="true"
+#
+ENV APPLY_ON_UNHEALTHY_NODES="true"
+
+#
+# Limit the terimantion of unhealthy nodes to be older then the stated time
+#
+# default="5m"
+#
+ENV APPLY_ON_UNHEALTHY_NODES_MIN_AGE="5m"

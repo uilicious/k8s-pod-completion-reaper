@@ -8,6 +8,8 @@ This effectively prevents any form of "pod restarts" from occuring, ensuring any
 This is to work around limitations in kubernetes currently.
 See: https://github.com/kubernetes/kubernetes/issues/101933
 
+Docker Hub location: [`uilicious/k8s-pod-completion-reaper`](https://hub.docker.com/repository/docker/uilicious/k8s-pod-completion-reaper/general)
+
 # ENV variable to configure the docker container
 
 | Name                | Default Value | Description                                                                                        |
@@ -74,11 +76,37 @@ spec:
     spec:
       containers:
       - name: pod-completion-reaper
-        image: "uilicious/pod-completion-reaper"
+        image: "uilicious/k8s-pod-completion-reaper"
         env: 
           - name: "NAMESPACE"
             value: "proj-namespace"
 ```
+
+# Testing a deployment
+
+If you can access the bash terminal of a pod, you can cause it to terminate on itself with 
+
+```
+kill -SIGTERM 1
+```
+
+Alternatively you can deploy a pod, which perodically terminates itself every 30 seconds
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: termination-demo
+  namespace: proj-namespace
+spec:
+  containers:
+  - name: termination-demo-container
+    image: debian
+    command: ["/bin/sh"]
+    args: ["-c", "sleep 30 && echo Sleep expired > /dev/termination-log"]
+```
+
+Alternatively use a busybox image - which will sleep 1h
 
 # Misc: Development Notes
 
@@ -90,55 +118,3 @@ object provided by ".[0].object", you may want to refer to either an existing cl
 or alternatively [./notes/example-pod.yaml](./notes/example-pod.yaml).
 
 This uses the APACHE license, to ensure its compatible with the shell-operator its built on.
-
-
-
-
-
-
-
-
-
----
-
-### Build operator image and push to your registry
-```
-docker build -t "remyuilicious/k8control:delete-pods" .    
-docker push remyuilicious/k8control:delete-pods
-```
-## Run & Test
-
-### Create namespace if necessary and deploy pod
-
-```
-kubectl create ns test-ns
-kubectl -n test-ns apply -f shell-operator-rbac.yaml  
-```
-
-Deploy a test od (example with a failing pod for testing purpose):
-
-1) busybox image - will sleep 1h
-2) Termination pod - will directly crash
-```
-kubectl -n  test-ns apply -f https://git.io/vPieo
-or 
-kubectl -n test-ns apply -f https://k8s.io/examples/debug/termination.yaml
-or 
-test from inside a pod (suicide): kill -SIGTERM 1
-```
-
-Check pods status in namespace and 
-see in logs that hook was run:
-
-```
-kubectl get pods --namespace=test-ns
-kubectl -n test-ns logs po/pod-reaper > logs.txt
-```
-
-### cleanup of testing env 
-```
-kubectl delete rolebinding/pod-reaper-role
-kubectl delete role/pod-reaper-role
-kubectl delete ns/test-ns
-```
-

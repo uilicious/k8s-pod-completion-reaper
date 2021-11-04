@@ -3,7 +3,7 @@
 This listens to kubernetes event stream, and trigger a pod removal. In event it exits.
 This effectively prevents any form of "pod restarts" from occuring, ensuring any pod startup is done "new".
 
-This is to work around limitations in kubernetes currently, when mimicing such a behaviour.
+This is to work around limitations in kubernetes currently.
 See: https://github.com/kubernetes/kubernetes/issues/101933
 
 # ENV variable to configure the docker container

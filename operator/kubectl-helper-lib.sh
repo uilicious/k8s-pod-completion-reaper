@@ -52,10 +52,7 @@ function PROCESS_POD_OBJ_JSON {
     POD_FULLNAME=$(echo "$POD_OBJ_JSON" | jq -r '.metadata.name')
 
     # Skip if null
-    if [[ -z "$POD_FULLNAME" ]]; then
-        return 0
-    fi
-    if [[ "$POD_FULLNAME" == "null" ]]; then
+    if [[ -z "$POD_FULLNAME" ]] || [[ "$POD_FULLNAME" == "null" ]]; then
         return 0
     fi
 
@@ -78,6 +75,15 @@ function PROCESS_POD_OBJ_JSON {
         fi
     fi
 
+    # Lets get the pod start time
+    POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].state.running.startedAt')
+
+    # Lets skip pod who does not have a start datetime (not eligible for termination)
+    # Skip if null
+    if [[ -z "$POD_START_DATETIME" ]] || [[ "$POD_START_DATETIME" == "null" ]]; then
+        return 0
+    fi
+
     ##
     ## Perform kubectl operator specific checks
     ## 
@@ -87,8 +93,7 @@ function PROCESS_POD_OBJ_JSON {
         ## Check if the pod is eligible for processing
         ##
 
-        # Lets get the pod start time
-        POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].state.running.startedAt')
+        # Lets get the start timestamp
         POD_START_TIME=$(date --date "$POD_START_DATETIME" +'%s')
 
         # Lets get the threshold timestamp

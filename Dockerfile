@@ -1,5 +1,9 @@
 FROM flant/shell-operator:latest
 
+# Adding alpine coreutils, this is required for some bash script utilities
+# like the date command to work as expected
+ADD apk add --update coreutils
+
 # Add the pods-hook file, and entrypoint script
 ADD hooks /hooks
 ADD operator /operator

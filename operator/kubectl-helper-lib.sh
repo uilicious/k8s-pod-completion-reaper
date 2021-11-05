@@ -60,6 +60,14 @@ function PROCESS_POD_OBJ_JSON {
     # Lets extract out the podname
     POD_FULLNAME=$(echo "$POD_OBJ_JSON" | jq '.metadata.name')
 
+    # Skip if null
+    if [[ -z "$POD_FULLNAME" ]]; then
+        return 0
+    fi
+    if [[ "$POD_FULLNAME"=="null" ]]; then
+        return 0
+    fi
+
     # Lets skip the pods whose names do not match
     if [[ -z "$TARGETPOD" ]]; then
         # TARGETPOD parameter is empty, match all containers in namespace

@@ -12,7 +12,7 @@ OPERATOR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 cd "$OPERATOR_DIR"
 
 # Import the kubectl-helper-lib
-source "./kubectl-helper-lib.sh"
+source "/operator/kubectl-helper-lib.sh"
 
 #
 # The main core loop, to perodically run the reaper operations

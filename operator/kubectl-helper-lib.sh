@@ -189,7 +189,7 @@ function PROCESS_POD_OBJ_LIST_JSON {
     IDX="0"
 
     # Get the first object
-    POD_OBJ=$(echo "$POD_LIST_JSON" | js ".[$IDX]")
+    POD_OBJ=$(echo "$POD_LIST_JSON" | jq ".[$IDX]")
 
     # The bash loop
     while [[ "$POD_OBJ"!="null" ]]; do
@@ -198,6 +198,6 @@ function PROCESS_POD_OBJ_LIST_JSON {
 
         # And increment
         IDX=$((IDX+1))
-        POD_OBJ=$(echo "$POD_LIST_JSON" | js ".[$IDX]")
+        POD_OBJ=$(echo "$POD_LIST_JSON" | jq ".[$IDX]")
     done
 }

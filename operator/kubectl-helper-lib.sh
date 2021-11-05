@@ -83,7 +83,7 @@ function PROCESS_POD_OBJ_JSON {
     fi
 
     # Lets get the pod start time
-    POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].state.running.startedAt')
+    POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.startTime')
 
     # Lets skip pod who does not have a start datetime (not eligible for termination)
     # Skip if null

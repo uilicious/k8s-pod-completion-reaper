@@ -73,12 +73,12 @@ if [[ -z "$TARGETPOD" ]]; then
   # TARGETPOD parameter is empty, match all containers in namespace
 	:
 else
-  if [[ "$POD_NAME"=~"$TARGETPOD" ]]; then
+  if [[ "$POD_NAME" =~ "$TARGETPOD" ]]; then
     # TARGETPOD matches, we shall permit this event
 		:
   else
     # TARGETPOD does not match, we should skip this event
-    if [[ "$DEBUG"=="true" ]]; then
+    if [[ "$DEBUG" == "true" ]]; then
       echo "DEBUG - skipping ${POD_NAME} as it does not match TARGETPOD regex : $TARGETPOD"
     fi
     exit 0
@@ -91,23 +91,23 @@ TERMINATED_REASON=$(echo "$JSON_OBJ_STR" | jq '.status.containerStatuses[0].stat
 
 # Fallback to "lastState", this can happen if the contianer is started "quickly"
 # before the event is properlly handled - and/or - the original event was missed
-if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE"=="null" ]]; then
+if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE" == "null" ]]; then
   TERMINATED_EXITCODE=$(echo "$JSON_OBJ_STR" | jq '.status.containerStatuses[0].lastState.terminated.exitCode')
   TERMINATED_REASON=$(echo "$JSON_OBJ_STR" | jq '.status.containerStatuses[0].lastState.terminated.reason')
 fi
 
 # If there is no exitcode / reason, we presume its a misfied event
 # so we shall ignore it
-if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE"=="null" ]]; then
+if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE" == "null" ]]; then
   exit 0
 fi
 
 # Special handling of exit code 0
-if [[ "$APPLY_ON_EXITCODE_0"!="true" ]]; then
+if [[ "$APPLY_ON_EXITCODE_0" != "true" ]]; then
   # Check if exit code is 0, skip it
-  if [[ "$TERMINATED_EXITCODE"=="0" ]]; then
+  if [[ "$TERMINATED_EXITCODE" == "0" ]]; then
     # DEBUG log the container that was skipped
-    if [[ "$DEBUG"=="true "]]; then
+    if [[ "$DEBUG" == "true "]]; then
       echo "DEBUG - skipping ${podName} with exitcode 0 ( APPLY_ON_EXITCODE_0 != true )"
     fi
     exit 0
@@ -119,7 +119,7 @@ fi
 #
 
 # Lets handle debug mode
-if [[ "$DEBUG"=="true "]]; then
+if [[ "$DEBUG" == "true" ]]; then
 	echo "DEBUG - would have terminated ${POD_NAME} which completed with exitcode $TERMINATED_EXITCODE : $TERMINATED_REASON"
 	exit 0
 fi

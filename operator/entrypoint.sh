@@ -15,7 +15,7 @@ fi
 
 # Startup the shell operator
 if [[ "$KUBECTL_FALLBACK_ENABLE"=="true" ]]; then
-      /operator/kubectl-operator-fallback.sh &
+      /operator/kubectl-fallback.sh &
 fi
 
 # Startup the shell operator

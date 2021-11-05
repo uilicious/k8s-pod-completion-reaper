@@ -2,12 +2,6 @@
 
 ################################################################################################################
 #
-# Due to the limitations of bash scripts, functions here generally have large parameter (and return values)
-# set to their respective global variables. (as compared to modern programming languages) - this is
-# generally good enough for the current use case.
-#
-# For smaller values, they can be set as parameters 
-#
 # To import / use the respective function simply
 #
 # ```
@@ -48,14 +42,11 @@ function DELETE_POD_CMD {
 # POD function, which works on a single POD_OBJ_JSON
 # and handle any, if required, terminations via kubectl
 #
-# This requires the POD_OBJ_JSON to be set
-#
-
-# The argument used for POD_OBJ related functions
-POD_OBJ_JSON="null"
 
 # The function itself to call
 function PROCESS_POD_OBJ_JSON {
+    # Get the POD_OBJ_JSON
+    POD_OBJ_JSON="$1"
         
     # Lets extract out the podname
     POD_FULLNAME=$(echo "$POD_OBJ_JSON" | jq '.metadata.name')
@@ -182,16 +173,12 @@ function PROCESS_POD_OBJ_JSON {
 # POD function, which works on a list of POD_OBJ_LIST_JSON
 # and handle any, if required, terminations via kubectl
 #
-# This requires the POD_OBJ_LIST_JSON to be set
-#
-
-# The argument used for POD_OBJ_LIST related functions
-POD_OBJ_LIST_JSON="null"
 
 # The function itself to call
 function PROCESS_POD_OBJ_LIST_JSON {
     # Lets iterate each object until a null occurs
     # this works around the lack of "length" parameter to iterate on
+    POD_OBJ_LIST_JSON="$1"
 
     # Idx of the object
     IDX="0"
@@ -202,10 +189,26 @@ function PROCESS_POD_OBJ_LIST_JSON {
     # The bash loop
     while [[ "$POD_OBJ"!="null" ]]; do
         # Process the pod obj
-        PROCESS_POD_OBJ_JSON
+        PROCESS_POD_OBJ_JSON "$POD_OBJ_JSON"
 
         # And increment
         IDX=$((IDX+1))
-        POD_OBJ=$(echo "$POD_LIST_JSON" | jq ".[$IDX]")
+        POD_OBJ_JSON=$(echo "$POD_LIST_JSON" | jq ".[$IDX]")
     done
+}
+
+#
+# Runs a single session of the kubectl operator
+# this is meant to run in a larger loop
+#
+function PROCESS_KUBECTL_OPERATOR {
+
+    # Configure the kubectl operator
+    export IS_KUBECTL_OPERATOR="true"
+
+    # Get the pod object list
+    POD_OBJ_LIST_JSON=$(kubectl get pods --namespace="$NAMESPACE" -o json | jq '.items')
+
+    # And process it, see kubectl-helper-lib.sh for the function
+    PROCESS_POD_OBJ_LIST_JSON "$POD_OBJ_LIST_JSON"
 }

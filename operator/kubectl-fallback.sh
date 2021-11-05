@@ -18,11 +18,8 @@ source "/operator/kubectl-helper-lib.sh"
 # The main core loop, to perodically run the reaper operations
 #
 while [[ true ]]; do
-    # Get the pod object list
-    POD_OBJ_LIST_JSON=$(kubectl get pods --namespace="$NAMESPACE" -o json | jq '.items')
-
     # And process it, see kubectl-helper-lib.sh for the function
-    PROCESS_POD_OBJ_LIST_JSON
+    PROCESS_KUBECTL_OPERATOR
 
     # Wait between steps
     sleep "$KUBECTL_POLLING_INTERVAL"

@@ -1,10 +1,14 @@
 FROM flant/shell-operator:latest
 
+# Adding alpine coreutils, this is required for some bash script utilities
+# like the date command to work as expected
+RUN apk add --update coreutils
+
 # Add the pods-hook file, and entrypoint script
 ADD hooks /hooks
 ADD operator /operator
 RUN chmod 755 /hooks/*.sh && chmod +x /hooks/*.sh && \
-    chmod 755 /operator/*.sh && chmod +x /operator/*.sh 
+    chmod 755 /operator/*.sh && chmod +x /operator/*.sh
 
 # Trigger the entrypoint script
 ENTRYPOINT ["/sbin/tini", "--", "/operator/entrypoint.sh"]
@@ -77,18 +81,18 @@ ENV KUBECTL_FALLBACK_ENABLE="true"
 ENV KUBECTL_POLLING_INTERVAL="30s"
 
 #
+# Limit the terimantion of unhealthy nodes to be older then the stated time in minutes
+#
+# Minimum age is used to work around race conditions, where a pod is "unhealthy" at start
+#
+# default="5"
+#
+ENV KUBECTL_MIN_AGE_IN_MINUTES="5"
+
+#
 # Pre-emptively perform pod termination on unhelathy nodes older thant the stated min age
 # this helps quicken the overal pod termination, and replacement process.
 # 
-# Minimum age is used to work around race conditions, where a pod is "unhealthy" at start
-#
 # default="true"
 #
 ENV APPLY_ON_UNHEALTHY_NODES="true"
-
-#
-# Limit the terimantion of unhealthy nodes to be older then the stated time
-#
-# default="5m"
-#
-ENV APPLY_ON_UNHEALTHY_NODES_MIN_AGE="5m"

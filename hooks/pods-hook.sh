@@ -91,9 +91,9 @@ TERMINATED_REASON=$(echo "$JSON_OBJ_STR" | jq -r '.status.containerStatuses[0].s
 
 # Fallback to "lastState", this can happen if the contianer is started "quickly"
 # before the event is properlly handled - and/or - the original event was missed
-if [[ -z "$TERMINATED_EXITCODE" ]]; then
-  TERMINATED_EXITCODE=$(echo "$JSON_OBJ_STR" | jq -r '.status.containerStatuses[0].lastState.terminated.exitCode')
-  TERMINATED_REASON=$(echo "$JSON_OBJ_STR" | jq -r'.status.containerStatuses[0].lastState.terminated.reason')
+if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE" == "null" ]]; then
+  TERMINATED_EXITCODE=$(echo "$JSON_OBJ_STR" | jq '.status.containerStatuses[0].lastState.terminated.exitCode')
+  TERMINATED_REASON=$(echo "$JSON_OBJ_STR" | jq '.status.containerStatuses[0].lastState.terminated.reason')
 fi
 
 # If there is no exitcode / reason, we presume its a misfied event

@@ -1,5 +1,7 @@
 # k8s-pod-completion-reaper
 
+Docker Hub location: [`uilicious/k8s-pod-completion-reaper`](https://hub.docker.com/repository/docker/uilicious/k8s-pod-completion-reaper/general)
+
 Automatically remove kubernetes pods when they exit / restarts.
 
 This listens to kubernetes event stream, and trigger a pod removal. In event it exits.
@@ -7,8 +9,6 @@ This effectively prevents any form of "pod restarts" from occuring, ensuring any
 
 This is to work around limitations in kubernetes currently.
 See: https://github.com/kubernetes/kubernetes/issues/101933
-
-Docker Hub location: [`uilicious/k8s-pod-completion-reaper`](https://hub.docker.com/repository/docker/uilicious/k8s-pod-completion-reaper/general)
 
 # ENV variable to configure the docker container
 

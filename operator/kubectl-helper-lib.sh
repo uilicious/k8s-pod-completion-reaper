@@ -16,6 +16,9 @@
 #
 ################################################################################################################
 
+# Boolean flag to indicate that the script is executed as the kubectl operator
+IS_KUBECTL_OPERATOR="false"
+
 #
 # Given the POD_FULLNAME passed as the first argument $1
 # and the TERMINATION_REASON as argument $2
@@ -23,22 +26,23 @@
 # terminate it (unless DEBUG=true)
 #
 function DELETE_POD_CMD {
+    # Operator mode
+    if [[ "$IS_KUBECTL_OPERATOR"=="true" ]]; then
+        OPERATOR_TYPE="kubectl-fallback"
+    else
+        OPERATOR_TYPE="shell-operator"
+    fi
+    
     # Lets handle debug mode
     if [[ "$DEBUG"=="true "]]; then
-        echo "DEBUG - would have terminated $1 - $2"
+        echo "[DEBUG:$OPERATOR_TYPE] - would have terminated $1 - $2"
         return 0
     fi
 
     # Lets perform the termination event
-    echo "ACTION - terminating $1 - $2"
+    echo "[DEBUG:$OPERATOR_TYPE] - terminating $1 - $2"
     kubectl delete pod --wait=false $1
 }
-
-# The argument used for POD_OBJ related functions
-POD_OBJ_JSON="null"
-
-# Boolean flag to indicate that the script is executed as the kubectl operator
-IS_KUBECTL_OPERATOR="false"
 
 #
 # POD function, which works on a single POD_OBJ_JSON
@@ -46,6 +50,9 @@ IS_KUBECTL_OPERATOR="false"
 #
 # This requires the POD_OBJ_JSON to be set
 #
+
+# The argument used for POD_OBJ related functions
+POD_OBJ_JSON="null"
 
 # The function itself to call
 function PROCESS_POD_OBJ_JSON {
@@ -161,4 +168,36 @@ function PROCESS_POD_OBJ_JSON {
     # We are here, lets do the termination event !
     #
     DELETE_POD_CMD "$POD_FULLNAME" "completed with exitcode $TERMINATED_EXITCODE : $TERMINATED_REASON"
+}
+
+#
+# POD function, which works on a list of POD_OBJ_LIST_JSON
+# and handle any, if required, terminations via kubectl
+#
+# This requires the POD_OBJ_LIST_JSON to be set
+#
+
+# The argument used for POD_OBJ_LIST related functions
+POD_OBJ_LIST_JSON="null"
+
+# The function itself to call
+function PROCESS_POD_OBJ_LIST_JSON {
+    # Lets iterate each object until a null occurs
+    # this works around the lack of "length" parameter to iterate on
+
+    # Idx of the object
+    IDX="0"
+
+    # Get the first object
+    POD_OBJ=$(echo "$POD_LIST_JSON" | js ".[$IDX]")
+
+    # The bash loop
+    while [[ "$POD_OBJ"!="null" ]]; do
+        # Process the pod obj
+        PROCESS_POD_OBJ_JSON
+
+        # And increment
+        IDX=$((IDX+1))
+        POD_OBJ=$(echo "$POD_LIST_JSON" | js ".[$IDX]")
+    done
 }

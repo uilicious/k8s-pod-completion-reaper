@@ -49,7 +49,7 @@ function PROCESS_POD_OBJ_JSON {
     POD_OBJ_JSON="$1"
         
     # Lets extract out the podname
-    POD_FULLNAME=$(echo "$POD_OBJ_JSON" | jq '.metadata.name')
+    POD_FULLNAME=$(echo "$POD_OBJ_JSON" | jq -r '.metadata.name')
 
     # Skip if null
     if [[ -z "$POD_FULLNAME" ]]; then
@@ -88,11 +88,11 @@ function PROCESS_POD_OBJ_JSON {
         ##
 
         # Lets get the pod start time
-        POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].state.running.startedAt')
+        POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].state.running.startedAt')
         POD_START_TIME=$(date --date "$POD_START_DATETIME" +'%s')
 
         # Lets get the threshold timestamp
-        THRESHOLD_TIME=$(date --date "$KUBECTL_MIN_AGE_IN_MINUTES minutes ago")
+        THRESHOLD_TIME=$(date --date "$KUBECTL_MIN_AGE_IN_MINUTES minutes ago" +'%s')
 
         # Lets skip the POD, if its newer (younger) then the threshold time
         if [[ "$POD_START_TIME" -gt "$THRESHOLD_TIME" ]]; then
@@ -107,7 +107,7 @@ function PROCESS_POD_OBJ_JSON {
         ## 
 
         # Lets check if there was a restart previously, and terminate it 
-        RESTART_COUNT=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].restartCount')
+        RESTART_COUNT=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].restartCount')
 
         # Handle termination based on RESTART_COUNT
         if [[ "$RESTART_COUNT" -gt "0" ]]; then
@@ -121,7 +121,7 @@ function PROCESS_POD_OBJ_JSON {
         ## 
 
         # Lets get the ready status
-        READY_STATUS=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].ready')
+        READY_STATUS=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].ready')
 
         # Terminate any container in "unhealthy" state
         if [[ "$READY_STATUS" == "false" ]]; then
@@ -135,14 +135,14 @@ function PROCESS_POD_OBJ_JSON {
     ## 
 
     # Get the terminated exit code and reason
-    TERMINATED_EXITCODE=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].state.terminated.exitCode')
-    TERMINATED_REASON=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].state.terminated.reason')
+    TERMINATED_EXITCODE=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].state.terminated.exitCode')
+    TERMINATED_REASON=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].state.terminated.reason')
 
     # Fallback to "lastState", this can happen if the contianer is started "quickly"
     # before the event is properlly handled - and/or - the original event was missed
     if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE" == "null" ]]; then
-        TERMINATED_EXITCODE=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].lastState.terminated.exitCode')
-        TERMINATED_REASON=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].lastState.terminated.reason')
+        TERMINATED_EXITCODE=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].lastState.terminated.exitCode')
+        TERMINATED_REASON=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].lastState.terminated.reason')
     fi
 
     # If there is no exitcode / reason, we presume its a misfied event
@@ -207,7 +207,7 @@ function PROCESS_KUBECTL_OPERATOR {
     export IS_KUBECTL_OPERATOR="true"
 
     # Get the pod object list
-    POD_OBJ_LIST_JSON=$(kubectl get pods --namespace="$NAMESPACE" -o json | jq '.items')
+    POD_OBJ_LIST_JSON=$(kubectl get pods --namespace="$NAMESPACE" -o json | jq -r '.items')
 
     # And process it, see kubectl-helper-lib.sh for the function
     PROCESS_POD_OBJ_LIST_JSON "$POD_OBJ_LIST_JSON"

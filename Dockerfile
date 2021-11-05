@@ -90,9 +90,15 @@ ENV KUBECTL_POLLING_INTERVAL="30s"
 ENV KUBECTL_MIN_AGE_IN_MINUTES="5"
 
 #
+# Delay interval between pods, this help prevents the entire cluster from being deleted
+# and restarting at the same time, putting an excess strain on the scheduler
+#
+ENV KUBECTL_POD_DELETION_WAIT="30s"
+
+#
 # Pre-emptively perform pod termination on unhelathy nodes older thant the stated min age
 # this helps quicken the overal pod termination, and replacement process.
 # 
 # default="true"
 #
-ENV APPLY_ON_UNHEALTHY_NODES="true"
+ENV KUBECTL_APPLY_ON_UNHEALTHY_NODES="true"

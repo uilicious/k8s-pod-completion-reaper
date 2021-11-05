@@ -36,6 +36,11 @@ function DELETE_POD_CMD {
     # Lets perform the termination event
     echo "[ACTION:$OPERATOR_TYPE] - terminating $1 - $2"
     kubectl delete pod --wait=false $1
+
+    # Perform any wait if needed
+    if [[ "$IS_KUBECTL_OPERATOR" == "true" ]]; then
+        sleep "$KUBECTL_POD_DELETION_WAIT"
+    fi
 }
 
 #

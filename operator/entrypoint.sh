@@ -14,12 +14,12 @@ then
 fi
 
 # Startup the shell operator
-if [[ "$KUBECTL_FALLBACK_ENABLE"=="true" ]]; then
+if [[ "$KUBECTL_FALLBACK_ENABLE" == "true" ]]; then
       /operator/kubectl-fallback.sh &
 fi
 
 # Startup the shell operator
-if [[ "$SHELL_OPERATOR_ENABLE"=="true" ]]; then
+if [[ "$SHELL_OPERATOR_ENABLE" == "true" ]]; then
       /shell-operator start &
 fi
 

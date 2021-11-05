@@ -34,7 +34,7 @@ function DELETE_POD_CMD {
     fi
 
     # Lets perform the termination event
-    echo "[DEBUG:$OPERATOR_TYPE] - terminating $1 - $2"
+    echo "[ACTION:$OPERATOR_TYPE] - terminating $1 - $2"
     kubectl delete pod --wait=false $1
 }
 
@@ -45,6 +45,13 @@ function DELETE_POD_CMD {
 
 # The function itself to call
 function PROCESS_POD_OBJ_JSON {
+    # Operator mode
+    if [[ "$IS_KUBECTL_OPERATOR" == "true" ]]; then
+        OPERATOR_TYPE="kubectl-fallback"
+    else
+        OPERATOR_TYPE="shell-operator"
+    fi
+    
     # Get the POD_OBJ_JSON
     POD_OBJ_JSON="$1"
         
@@ -69,7 +76,7 @@ function PROCESS_POD_OBJ_JSON {
         else
             # TARGETPOD does not match, we should skip this event
             if [[ "$DEBUG" == "true" ]]; then
-                echo "DEBUG - skipping ${POD_FULLNAME} as it does not match TARGETPOD regex : $TARGETPOD"
+                echo "[DEBUG:$OPERATOR_TYPE] - skipping ${POD_FULLNAME} as it does not match TARGETPOD regex : $TARGETPOD"
             fi
             return 0
         fi
@@ -102,7 +109,7 @@ function PROCESS_POD_OBJ_JSON {
         # Lets skip the POD, if its newer (younger) then the threshold time
         if [[ "$POD_START_TIME" -gt "$THRESHOLD_TIME" ]]; then
             if [[ "$DEBUG" == "true" ]]; then
-                echo "DEBUG - skipping ${POD_FULLNAME} as its newer then KUBECTL_MIN_AGE_IN_MINUTES"
+                echo "[DEBUG:$OPERATOR_TYPE] - skipping ${POD_FULLNAME} as its newer then KUBECTL_MIN_AGE_IN_MINUTES"
             fi
             return 0;
         fi
@@ -157,12 +164,12 @@ function PROCESS_POD_OBJ_JSON {
     fi
 
     # Special handling of exit code 0
-    if [[ "$APPLY_ON_EXITCODE_0"!="true" ]]; then
+    if [[ "$APPLY_ON_EXITCODE_0" != "true" ]]; then
         # Check if exit code is 0, skip it
         if [[ "$TERMINATED_EXITCODE" == "0" ]]; then
             # DEBUG log the container that was skipped
             if [[ "$DEBUG" == "true" ]]; then
-                echo "DEBUG - skipping ${podName} with exitcode 0 ( APPLY_ON_EXITCODE_0 != true )"
+                echo "[DEBUG:$OPERATOR_TYPE] - skipping ${podName} with exitcode 0 ( APPLY_ON_EXITCODE_0 != true )"
             fi
             return 0
         fi

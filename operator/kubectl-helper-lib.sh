@@ -21,14 +21,14 @@ IS_KUBECTL_OPERATOR="false"
 #
 function DELETE_POD_CMD {
     # Operator mode
-    if [[ "$IS_KUBECTL_OPERATOR"=="true" ]]; then
+    if [[ "$IS_KUBECTL_OPERATOR" == "true" ]]; then
         OPERATOR_TYPE="kubectl-fallback"
     else
         OPERATOR_TYPE="shell-operator"
     fi
     
     # Lets handle debug mode
-    if [[ "$DEBUG"=="true" ]]; then
+    if [[ "$DEBUG" == "true" ]]; then
         echo "[DEBUG:$OPERATOR_TYPE] - would have terminated $1 - $2"
         return 0
     fi
@@ -55,7 +55,7 @@ function PROCESS_POD_OBJ_JSON {
     if [[ -z "$POD_FULLNAME" ]]; then
         return 0
     fi
-    if [[ "$POD_FULLNAME"=="null" ]]; then
+    if [[ "$POD_FULLNAME" == "null" ]]; then
         return 0
     fi
 
@@ -65,13 +65,13 @@ function PROCESS_POD_OBJ_JSON {
         # : Does nothing
         :
     else
-        if [[ "$POD_FULLNAME"=~"$TARGETPOD" ]]; then
+        if [[ "$POD_FULLNAME" =~ "$TARGETPOD" ]]; then
             # TARGETPOD matches, we shall permit this event
             # : Does nothing
             :
         else
             # TARGETPOD does not match, we should skip this event
-            if [[ "$DEBUG"=="true" ]]; then
+            if [[ "$DEBUG" == "true" ]]; then
                 echo "DEBUG - skipping ${POD_FULLNAME} as it does not match TARGETPOD regex : $TARGETPOD"
             fi
             return 0
@@ -82,7 +82,7 @@ function PROCESS_POD_OBJ_JSON {
     ## Perform kubectl operator specific checks
     ## 
 
-    if [[ "$IS_KUBECTL_OPERATOR"=="true" ]]; then
+    if [[ "$IS_KUBECTL_OPERATOR" == "true" ]]; then
         ##
         ## Check if the pod is eligible for processing
         ##
@@ -96,7 +96,7 @@ function PROCESS_POD_OBJ_JSON {
 
         # Lets skip the POD, if its newer (younger) then the threshold time
         if [[ "$POD_START_TIME" -gt "$THRESHOLD_TIME" ]]; then
-            if [[ "$DEBUG"=="true" ]]; then
+            if [[ "$DEBUG" == "true" ]]; then
                 echo "DEBUG - skipping ${POD_FULLNAME} as its newer then KUBECTL_MIN_AGE_IN_MINUTES"
             fi
             return 0;
@@ -124,7 +124,7 @@ function PROCESS_POD_OBJ_JSON {
         READY_STATUS=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].ready')
 
         # Terminate any container in "unhealthy" state
-        if [[ "$READY_STATUS"=="false" ]]; then
+        if [[ "$READY_STATUS" == "false" ]]; then
             DELETE_POD_CMD "$POD_FULLNAME" "due to lack of ready ($READY_STATUS) status"
             return 0
         fi
@@ -140,23 +140,23 @@ function PROCESS_POD_OBJ_JSON {
 
     # Fallback to "lastState", this can happen if the contianer is started "quickly"
     # before the event is properlly handled - and/or - the original event was missed
-    if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE"=="null" ]]; then
+    if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE" == "null" ]]; then
         TERMINATED_EXITCODE=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].lastState.terminated.exitCode')
         TERMINATED_REASON=$(echo "$POD_OBJ_JSON" | jq '.status.containerStatuses[0].lastState.terminated.reason')
     fi
 
     # If there is no exitcode / reason, we presume its a misfied event
     # so we shall ignore it
-    if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE"=="null" ]]; then
+    if [[ -z "$TERMINATED_EXITCODE" ]] || [[ "$TERMINATED_EXITCODE" == "null" ]]; then
         return 0
     fi
 
     # Special handling of exit code 0
     if [[ "$APPLY_ON_EXITCODE_0"!="true" ]]; then
         # Check if exit code is 0, skip it
-        if [[ "$TERMINATED_EXITCODE"=="0" ]]; then
+        if [[ "$TERMINATED_EXITCODE" == "0" ]]; then
             # DEBUG log the container that was skipped
-            if [[ "$DEBUG"=="true" ]]; then
+            if [[ "$DEBUG" == "true" ]]; then
                 echo "DEBUG - skipping ${podName} with exitcode 0 ( APPLY_ON_EXITCODE_0 != true )"
             fi
             return 0
@@ -184,16 +184,16 @@ function PROCESS_POD_OBJ_LIST_JSON {
     IDX="0"
 
     # Get the first object
-    POD_OBJ_JSON=$(echo "$POD_LIST_JSON" | jq ".[$IDX]")
+    POD_OBJ_JSON=$(echo "$POD_OBJ_LIST_JSON" | jq ".[$IDX]")
 
     # The bash loop
-    while [[ "$POD_OBJ"!="null" ]]; do
+    while [[ "$POD_OBJ_JSON" != "null" ]]; do
         # Process the pod obj
         PROCESS_POD_OBJ_JSON "$POD_OBJ_JSON"
 
         # And increment
         IDX=$((IDX+1))
-        POD_OBJ_JSON=$(echo "$POD_LIST_JSON" | jq ".[$IDX]")
+        POD_OBJ_JSON=$(echo "$POD_OBJ_LIST_JSON" | jq ".[$IDX]")
     done
 }
 

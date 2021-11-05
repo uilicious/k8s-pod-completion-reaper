@@ -34,7 +34,7 @@ function DELETE_POD_CMD {
     fi
     
     # Lets handle debug mode
-    if [[ "$DEBUG"=="true "]]; then
+    if [[ "$DEBUG"=="true" ]]; then
         echo "[DEBUG:$OPERATOR_TYPE] - would have terminated $1 - $2"
         return 0
     fi
@@ -157,7 +157,7 @@ function PROCESS_POD_OBJ_JSON {
         # Check if exit code is 0, skip it
         if [[ "$TERMINATED_EXITCODE"=="0" ]]; then
             # DEBUG log the container that was skipped
-            if [[ "$DEBUG"=="true "]]; then
+            if [[ "$DEBUG"=="true" ]]; then
                 echo "DEBUG - skipping ${podName} with exitcode 0 ( APPLY_ON_EXITCODE_0 != true )"
             fi
             return 0

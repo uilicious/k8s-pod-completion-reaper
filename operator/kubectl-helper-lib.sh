@@ -136,15 +136,20 @@ function PROCESS_POD_OBJ_JSON {
         ##
         ## Terminate because of failed healthcheck
         ## 
+        
+        if [[ "$KUBECTL_APPLY_ON_UNHEALTHY_NODES" == "true" ]]; then
+            STARTED_STATUS=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].started')
+            READY_STATUS=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].ready')
 
-        # Lets get the ready status
-        READY_STATUS=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].ready')
-
-        # Terminate any container in "unhealthy" state
-        if [[ "$READY_STATUS" == "false" ]]; then
-            DELETE_POD_CMD "$POD_FULLNAME" "due to lack of ready ($READY_STATUS) status"
-            return 0
+            # Terminate any container in "unhealthy" state
+            if [[ "$STARTED_STATUS" == "true" ]]; then
+                if [[ "$READY_STATUS" == "false" ]]; then
+                    DELETE_POD_CMD "$POD_FULLNAME" "due to lack of ready ($READY_STATUS) status"
+                    return 0
+                fi
+            fi
         fi
+        
     fi
 
     ##

@@ -99,6 +99,6 @@ ENV KUBECTL_POD_DELETION_WAIT="30s"
 # Pre-emptively perform pod termination on unhelathy nodes older thant the stated min age
 # this helps quicken the overal pod termination, and replacement process.
 # 
-# default="true"
+# default="false"
 #
-ENV KUBECTL_APPLY_ON_UNHEALTHY_NODES="true"
+ENV KUBECTL_APPLY_ON_UNHEALTHY_NODES="false"

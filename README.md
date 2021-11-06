@@ -12,13 +12,19 @@ See: https://github.com/kubernetes/kubernetes/issues/101933
 
 # ENV variable to configure the docker container
 
-| Name                | Default Value | Description                                                                                        |
-|---------------------|---------------|----------------------------------------------------------------------------------------------------|
-| NAMESPACE           | -             | (Required) Namespace to limit the pod reaper to                                                    |
-| TARGETPOD           | -             | Regex expression for matching POD, to apply the k8s-pod-completion-reaper to                       |
-| APPLY_ON_EXITCODE_0 | true          | If true, Terminate and remove the pods, even if the exit code was 0 (aka, it exited without error) |
-| DEBUG               | false         | If true, perform no action and logs it instead.                                                    |
-| LOG_LEVEL           | error         | Log level, of shell-operator, use either "debug","info" or "error"                                 |
+| Name                             | Default Value | Description                                                                                                                                           |
+|----------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| NAMESPACE                        | -             | (Required) Namespace to limit the pod reaper to                                                                                                       |
+| TARGETPOD                        | -             | Regex expression for matching POD, to apply the k8s-pod-completion-reaper to, if blank, matches all containers in the namespace                       |
+| APPLY_ON_EXITCODE_0              | true          | If true, Terminate and remove the pods, even if the exit code was 0 (aka, it exited without error)                                                    |
+| DEBUG                            | false         | If true, perform no action and logs it instead                                                                                                        |
+| LOG_LEVEL                        | error         | Log level, of shell-operator, use either "debug","info" or "error"                                                                                    |
+| SHELL_OPERATOR_ENABLE            | true          | Enable the use of the main shell-operator workflow, which would react quicker in a "live" manner                                                      |
+| KUBECTL_FALLBACK_ENABLE          | true          | Enable the inbuilt kubectl fallback behaviour, which triggers on a perodic basis                                                                      |
+| KUBECTL_POLLING_INTERVAL         | 30s           | Polling interval to wait between scans, note due to POD_DELETION_WAIT actual interval maybe significant longer                                        |
+| KUBECTL_POD_DELETION_WAIT        | 10s           | Number of seconds for kubectl to wait between deletion command, this can be used to limit the number of containers being restarted at the "same time" |
+| KUBECTL_MIN_AGE_IN_MINUTES       | 5             | Minimum age of the kubectl pod to be considered valid for kubectl fallback evaluation                                                                 |
+| KUBECTL_APPLY_ON_UNHEALTHY_NODES | false         | Optionally, pre-emptively terminate unhealthy node, allowing a new pod to be created earlier                                                          |
 
 # Deployment
 

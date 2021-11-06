@@ -73,12 +73,20 @@ ENV SHELL_OPERATOR_ENABLE="true"
 ENV KUBECTL_FALLBACK_ENABLE="true"
 
 #
-# Polling interval to be used in bewtween scans, note that actual interval
+# Polling interval to wait bewtween scans, note that actual interval
 # maybe significant longer if the kubectl commands are "slow"
 #
 # default="30s"
 #
 ENV KUBECTL_POLLING_INTERVAL="30s"
+
+#
+# Delay interval between pods, this help prevents the entire cluster from being deleted
+# and restarting at the same time, putting an excess strain on the scheduler
+#
+# default="10s"
+#
+ENV KUBECTL_POD_DELETION_WAIT="10s"
 
 #
 # Limit the terimantion of unhealthy nodes to be older then the stated time in minutes
@@ -88,12 +96,6 @@ ENV KUBECTL_POLLING_INTERVAL="30s"
 # default="5"
 #
 ENV KUBECTL_MIN_AGE_IN_MINUTES="5"
-
-#
-# Delay interval between pods, this help prevents the entire cluster from being deleted
-# and restarting at the same time, putting an excess strain on the scheduler
-#
-ENV KUBECTL_POD_DELETION_WAIT="30s"
 
 #
 # Pre-emptively perform pod termination on unhelathy nodes older thant the stated min age

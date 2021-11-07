@@ -8,7 +8,7 @@ then
       echo "# [CRITICAL-ISSUE] Missing required 'NAMESPACE' environment variable"
       exit 1
 fi
-if [ -z "$TARGET_POD" ]
+if [ -z "$TARGETPOD" ]
 then
       echo "# [WARNING] Missing required 'TARGETPOD' environment variable - this will match against all pods in the namespace"
 fi

@@ -12,13 +12,17 @@ See: https://github.com/kubernetes/kubernetes/issues/101933
 
 This operator/container can also be adjusted to perform removal on "unhealthy" nodes (not covered in the k8s issue listed above, disabled by default)
 
-> WARNING: This will trigger a removal for any "restarting" or "restarted" container matching the TARGETPOD / NAMESPACE. In event that this is deployed to an existing live environment,
-> this may end up triggering a large number of pod removals (potentially the whole namespace) if there are multiple pods who has been restarted previously.
->
-> If the hosts does not have the required resources to handle the mass removal and replacement of of containers, this could lead to a restart loop. You are recommended instead to tune the container 
-> and significantly increase the `KUBECTL_POD_DELETION_WAIT` for the initial deployment, to slow down the rate of replacement (and lighten the load) or scale up your node count (and increase capacity).
->
-> Alternatively, you should really test and understand how this reaper operator work in a TEST environment before deploying effectively strangers code in PRODUCTION =P
+# Production Deployment Warning
+
+This will trigger a removal for any "restarting" or "restarted" container matching the TARGETPOD / NAMESPACE. In event that this is deployed to an existing live environment,
+this may end up triggering a large number of pod removals (potentially the whole namespace) if there are multiple pods who has been restarted previously.
+
+If the hosts does not have the required resources to handle the mass removal and replacement of of containers, this could lead to a restart loop. You are recommended instead to tune the container 
+and significantly increase the `KUBECTL_POD_DELETION_WAIT` for the initial deployment, to slow down the rate of replacement (and lighten the load) or scale up your node count (and increase capacity).
+
+If you do not need to remove existing containers, and would like to only remove remove new restarts, you may set `KUBECTL_FALLBACK_ENABLE=false` 
+
+Alternatively, you should really test and understand how this reaper operator work in a TEST environment before deploying effectively strangers code in PRODUCTION =P
 
 # ENV variable to configure the docker container
 

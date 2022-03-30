@@ -45,6 +45,12 @@ ENV APPLY_ON_EXITCODE_0="true"
 ENV DEBUG="false"
 
 #
+# LOG POD STATUS mode, when enabled, will record TARGETPOD ready status changes
+#
+# default="false"
+#
+ENV ENABLE_STATUS_HOOK="false"
+#
 # LOG_LEVEL for the shell-operator, use either
 # debug, info, error
 #

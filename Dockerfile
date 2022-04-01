@@ -49,7 +49,8 @@ ENV DEBUG="false"
 #
 # default="false"
 #
-ENV ENABLE_STATUS_HOOK="false"
+ENV LOG_STATUS_CHANGE="false"
+
 #
 # LOG_LEVEL for the shell-operator, use either
 # debug, info, error

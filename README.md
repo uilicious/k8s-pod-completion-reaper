@@ -32,6 +32,7 @@ Alternatively, you should really test and understand how this reaper operator wo
 | TARGETPOD                        | -             | Regex expression for matching POD, to apply the k8s-pod-completion-reaper to, if blank, matches all containers in the namespace                       |
 | APPLY_ON_EXITCODE_0              | true          | If true, Terminate and remove the pods, even if the exit code was 0 (aka, it exited without error)                                                    |
 | DEBUG                            | false         | If true, perform no action and logs it instead                                                                                                        |
+| ENABLE_STATUS_HOOK               | false         | If true, will log pod ready status
 | LOG_LEVEL                        | error         | Log level, of shell-operator, use either "debug","info" or "error"                                                                                    |
 | SHELL_OPERATOR_ENABLE            | true          | Enable the use of the main shell-operator workflow, which would react quicker in a "live" manner                                                      |
 | KUBECTL_FALLBACK_ENABLE          | true          | Enable the inbuilt kubectl fallback behaviour, which triggers on a perodic basis                                                                      |

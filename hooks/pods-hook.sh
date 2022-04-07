@@ -9,6 +9,7 @@
 ##
 
 #-----------------------------------------------------------------------------------------
+# Tst
 # This is called once by shell-operator, using the "--config" parameter
 #
 # See: https://github.com/flant/shell-operator#build-an-image-with-your-hooks

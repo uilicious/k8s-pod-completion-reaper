@@ -20,7 +20,7 @@ fi
 JSON_EVENT_STR=$(cat ${BINDING_CONTEXT_PATH})
 
 #Can't check if enabled earlier in code because hooks need at least have one property
-#if [[ "$ENABLE_STATUS_HOOK" = "true" ]] ; then
+if [[ "$ENABLE_STATUS_HOOK" = "true" ]] ; then
     # Get the JSON object
     JSON_OBJ_STR=$(echo $JSON_EVENT_STR | jq -r '.[0].object')
     # Lets extract out several key values

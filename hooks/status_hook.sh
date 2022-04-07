@@ -54,4 +54,4 @@ if [[ "$ENABLE_STATUS_HOOK" = "true" ]] ; then
         echo "STATUS UPDATE ${POD_NAME} - INIT IS ${INIT} | READY IS ${READY} | CONTAINER READY IS ${CONTAINER_READY} | POD SCHEDULED IS ${PODSCHEDULED} "
     fi
 
-#fi
+fi

@@ -25,3 +25,4 @@ JSON_OBJ_STR=$(echo $JSON_EVENT_STR | jq -r '.[0].object')
 # Lets extract out several key values
 POD_NAME=$(echo "$JSON_OBJ_STR" | jq -r '.metadata.name')
 fi
+fi

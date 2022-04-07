@@ -49,7 +49,7 @@ ENV DEBUG="false"
 #
 # default="false"
 #
-ENV LOG_STATUS_CHANGE="true"
+ENV LOG_STATUS_CHANGE="false"
 
 #
 # LOG_LEVEL for the shell-operator, use either

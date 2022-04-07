@@ -8,22 +8,19 @@ kubernetes:
   #
   executeHookOnEvent:
   - Modified
-  - Added
-  - Deleted
   #
   # Limit filtering to changes in ready states (stored in conditions[1])
   #
+  jqFilter: ".status.conditions[1].status"
 EOF
 exit 0
 fi
-
-echo "Status hook is triggered"
 # Get the raw JSON event string, we intentionally do this only once
 # to reduce the amount of IO involved in temporary files
 JSON_EVENT_STR=$(cat ${BINDING_CONTEXT_PATH})
 
-# Can't check if enabled earlier in code because hooks need at least have one property
-# if [[ "$LOG_STATUS_CHANGE" = "true" ]]; then
+#Can't check if enabled earlier in code because hooks need at least have one property
+if [[ "$ENABLE_STATUS_HOOK" = "true" ]] ; then
     # Get the JSON object
     JSON_OBJ_STR=$(echo $JSON_EVENT_STR | jq -r '.[0].object')
     # Lets extract out several key values

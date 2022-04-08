@@ -57,9 +57,9 @@ fi
 # Get the raw JSON event string, we intentionally do this only once
 # to reduce the amount of IO involved in temporary files
 JSON_EVENT_STR=$(cat ${BINDING_CONTEXT_PATH})
-
+echo 'Stuff thingies'
 # Can't check if enabled earlier in code because hooks need at least have one property
-if [[ "$LOG_STATUS_CHANGE" = "true" ]]; then
+#if [[ "$LOG_STATUS_CHANGE" = "true" ]]; then
     # Get the JSON object
     JSON_OBJ_STR=$(echo $JSON_EVENT_STR | jq -r '.[0].object')
     # Lets extract out several key values
@@ -92,4 +92,4 @@ if [[ "$LOG_STATUS_CHANGE" = "true" ]]; then
     else 
         echo "STATUS UPDATE ${POD_NAME} - INIT IS ${INIT} | READY IS ${READY} | CONTAINER READY IS ${CONTAINER_READY} | POD SCHEDULED IS ${PODSCHEDULED} "
     fi
-fi
+#fi

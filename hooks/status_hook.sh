@@ -1,20 +1,58 @@
 #!/usr/bin/env bash
+
+##
+## This builds on shell-operator : https://github.com/flant/shell-operator
+##
+## Which calls the various shell scripts in /hooks
+## first with "--config" to get the script configuration,
+## and subsequently on every event trigger.
+##
+
+#-----------------------------------------------------------------------------------------
+# This is called once by shell-operator, using the "--config" parameter
+#
+# See: https://github.com/flant/shell-operator#build-an-image-with-your-hooks
+#
+# It is used to configure the pod hook, and limit to events according to
+# the defined filters
+#
+#-----------------------------------------------------------------------------------------
 if [[ $1 == "--config" ]] ; then
 cat <<EOF
 configVersion: v1
 kubernetes:
 - apiVersion: v1
   kind: Pod
+  # 
+  # Because the modified event is extreamly verbose,
+  # (especially with healthcheck, which updates it every X seconds)
+  # when possible we will add upfront any filters we can
+  # use to reduce the amount of "modified" events
   #
   executeHookOnEvent:
   - Modified
+  # 
+  # Limit filtering to the namespace
+  #
+  namespace:
+    nameSelector:
+      matchNames: ["${NAMESPACE}"]
   #
   # Limit filtering to changes in ready states (stored in conditions[1])
   #
   jqFilter: ".status.conditions[1].status"
 EOF
+# Exit immediately, after outputting the config
 exit 0
 fi
+#-----------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------
+#
+# Handle the processing of events.
+#
+# ${BINDING_CONTEXT_PATH} is a path to .json file
+# 
+#-----------------------------------------------------------------------------------------
 
 # Get the raw JSON event string, we intentionally do this only once
 # to reduce the amount of IO involved in temporary files

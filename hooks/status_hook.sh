@@ -79,6 +79,7 @@ else
 fi
 
 # Can't check if enabled earlier in code because hooks need at least have one property
+# IF STATUS LOGS AREN'T SHOWING UP MAKE SURE LOG_LEVEL IS SET TO "INFO"
 if [[ "$LOG_STATUS_CHANGE" = "true" ]]; then
     # SEE POD CONDITIONS FROM OFFICIAL DOC
     # https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/

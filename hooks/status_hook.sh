@@ -40,7 +40,7 @@ kubernetes:
   #
   # Limit filtering to changes in ready states (stored in conditions[1])
   #
-  jqFilter: ".status.conditions[1].status"
+  # jqFilter: ".status.conditions[1].status"
 EOF
 # Exit immediately, after outputting the config
 exit 0

@@ -34,13 +34,13 @@ kubernetes:
   # 
   # Limit filtering to the namespace
   #
-  #namespace:
-    #nameSelector:
-      #matchNames: ["${NAMESPACE}"]
+  namespace:
+    nameSelector:
+      matchNames: ["${NAMESPACE}"]
   #
   # Limit filtering to changes in ready states (stored in conditions[1])
   #
-  # jqFilter: ".status.conditions[1].status"
+  jqFilter: ".status.conditions[1].status"
 EOF
 # Exit immediately, after outputting the config
 exit 0
@@ -58,6 +58,12 @@ fi
 # to reduce the amount of IO involved in temporary files
 JSON_EVENT_STR=$(cat ${BINDING_CONTEXT_PATH})
 
+# Get the JSON object
+JSON_OBJ_STR=$(echo $JSON_EVENT_STR | jq -r '.[0].object')
+
+# Lets extract out several key values
+POD_NAME=$(echo "$JSON_OBJ_STR" | jq -r '.metadata.name')
+
 # Lets skip the pods whose names do not match
 if [[ -z "$TARGETPOD" ]]; then
   # TARGETPOD parameter is empty, match all containers in namespace
@@ -73,19 +79,7 @@ else
 fi
 
 # Can't check if enabled earlier in code because hooks need at least have one property
-#if [[ "$LOG_STATUS_CHANGE" = "true" ]]; then
-    # Get the JSON object
-    JSON_OBJ_STR=$(echo $JSON_EVENT_STR | jq -r '.[0].object')
-    # Lets extract out several key values
-    POD_NAME=$(echo "$JSON_OBJ_STR" | jq -r '.metadata.name')
-
-    if [[ "$POD_NAME" =~ "$TARGETPOD" ]]; then
-    # TARGETPOD matches, we shall permit this event
-	    :
-    else
-        # TARGETPOD does not match, we should skip this event
-        exit 0
-    fi
+if [[ "$LOG_STATUS_CHANGE" = "true" ]]; then
     # SEE POD CONDITIONS FROM OFFICIAL DOC
     # https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
     INIT=$(echo "$JSON_OBJ_STR" | jq -r '.status.conditions[0].status')
@@ -106,4 +100,4 @@ fi
     else 
         echo "STATUS UPDATE ${POD_NAME} - INIT IS ${INIT} | READY IS ${READY} | CONTAINER READY IS ${CONTAINER_READY} | POD SCHEDULED IS ${PODSCHEDULED} "
     fi
-#fi
+fi

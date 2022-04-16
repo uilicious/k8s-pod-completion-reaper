@@ -244,7 +244,7 @@ function PROCESS_POD_IDS {
     for POD_ID in "${POD_ID_ARRAY[@]}"
     do
         # Get the POD_OBJ_JSON
-        POD_OBJ_JSON=$(kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running --field-selector=metadata.name=$POD_ID -o json 2>&1 | jq -rn '.items')
+        POD_OBJ_JSON=$(kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running --field-selector=metadata.name=$POD_ID -o json 2>&1 | jq -rn '.items[0]')
         
         # Process the pod obj
         if [[ "$POD_OBJ_JSON" != "null" ]]; then

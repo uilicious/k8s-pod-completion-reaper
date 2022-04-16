@@ -27,6 +27,18 @@ function DELETE_POD_CMD {
         OPERATOR_TYPE="shell-operator"
     fi
     
+    # Lets get the existing status, and skip the termination step if needed 
+    POD_SUMMARY=$(kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running --field-selector=metadata.name=$1 2>&1 | grep Running)
+    if [ -z "$POD_SUMMARY" ]
+    then
+        # If the summary is empty, Its presumingly not running! - skip it
+        if [[ "$DEBUG" == "true" ]]; then
+            # Lets handle debug mode
+            echo "[DEBUG:$OPERATOR_TYPE] - skipping (container may already be terminated) $1 - $2"
+        fi
+        return 0
+    fi
+
     # Lets handle debug mode
     if [[ "$DEBUG" == "true" ]]; then
         echo "[DEBUG:$OPERATOR_TYPE] - would have terminated $1 - $2"
@@ -89,10 +101,14 @@ function PROCESS_POD_OBJ_JSON {
 
     ##
     ## Check that the pod deifinition is valid, with an overall startTime
+    ## This should not be possible if we are extracting the pod ID from summary
     ## 
 
-    # Lets get the pod start time
-    POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.startTime')
+    # # Lets get the pod allocation start time
+    # POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.startTime')
+
+    # Lets get the pod container start time
+    POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -rn '.status.containerStatuses[0].state.running.startedAt')
 
     # Lets skip pod who does not have a start datetime (not eligible for termination)
     # Skip if null
@@ -105,7 +121,7 @@ function PROCESS_POD_OBJ_JSON {
     ## 
 
     # Lets check if there was a restart previously, and terminate it 
-    RESTART_COUNT=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].restartCount')
+    RESTART_COUNT=$(echo "$POD_OBJ_JSON" | jq -rn '.status.containerStatuses[0].restartCount')
 
     # Handle termination based on RESTART_COUNT
     if [[ "$RESTART_COUNT" -gt "0" ]]; then
@@ -115,9 +131,8 @@ function PROCESS_POD_OBJ_JSON {
     fi
 
     ##
-    ## Perform kubectl operator specific checks
-    ## 
-
+    ## Perform kubectl operator specific check for unhealthy status
+    ##
     if [[ "$IS_KUBECTL_OPERATOR" == "true" ]]; then
         ##
         ## Check if the pod is eligible for processing
@@ -142,8 +157,8 @@ function PROCESS_POD_OBJ_JSON {
         ## 
         
         if [[ "$KUBECTL_APPLY_ON_UNHEALTHY_NODES" == "true" ]]; then
-            STARTED_STATUS=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].started')
-            READY_STATUS=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].ready')
+            STARTED_STATUS=$(echo "$POD_OBJ_JSON" | jq -rn '.status.containerStatuses[0].started')
+            READY_STATUS=$(echo "$POD_OBJ_JSON" | jq -rn '.status.containerStatuses[0].ready')
 
             # Terminate any container in "unhealthy" state
             if [[ "$STARTED_STATUS" == "true" ]]; then
@@ -157,7 +172,7 @@ function PROCESS_POD_OBJ_JSON {
     fi
 
     ##
-    ## Terminate because of exit code
+    ## Terminate because of previously found exit code
     ## 
 
     # Get the terminated exit code and reason
@@ -199,8 +214,6 @@ function PROCESS_POD_OBJ_JSON {
 # POD function, which works on a list of POD_OBJ_LIST_JSON
 # and handle any, if required, terminations via kubectl
 #
-
-# The function itself to call
 function PROCESS_POD_OBJ_LIST_JSON {
     # Lets iterate each object until a null occurs
     # this works around the lack of "length" parameter to iterate on
@@ -223,6 +236,23 @@ function PROCESS_POD_OBJ_LIST_JSON {
     done
 }
 
+function PROCESS_POD_IDS {
+    # Map the space seperated ID list into an array
+    POD_ID_ARRAY=($1)
+
+    # For each ID lets process it
+    for POD_ID in "${POD_ID_ARRAY[@]}"
+    do
+        # Get the POD_OBJ_JSON
+        POD_OBJ_JSON=$(kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running --field-selector=metadata.name=$POD_ID -o json 2>&1 | jq -rn '.items')
+        
+        # Process the pod obj
+        if [[ "$POD_OBJ_JSON" != "null" ]]; then
+            PROCESS_POD_OBJ_JSON "$POD_OBJ_JSON"
+        fi
+    done
+}
+
 #
 # Runs a single session of the kubectl operator
 # this is meant to run in a larger loop
@@ -232,9 +262,30 @@ function PROCESS_KUBECTL_OPERATOR {
     # Configure the kubectl operator
     export IS_KUBECTL_OPERATOR="true"
 
-    # Get the pod object list
-    POD_OBJ_LIST_JSON=$(kubectl get pods --namespace="$NAMESPACE" -o json | jq -r '.items')
+    # # !! Get the pod object list, and process it, see kubectl-helper-lib.sh for the function
+    # POD_OBJ_LIST_JSON=$(kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running -o json | jq -r '.items')
+    # PROCESS_POD_OBJ_LIST_JSON "$POD_OBJ_LIST_JSON"
 
-    # And process it, see kubectl-helper-lib.sh for the function
-    PROCESS_POD_OBJ_LIST_JSON "$POD_OBJ_LIST_JSON"
+    # !! Get the pod list, with the summary STATUS field. 
+    #
+    # We intentionally use this INSTEAD of the -o json, as it convinently provide the STATUS "ContainerCreating", and "Terminating"
+    # which is nearly impossible to find in the json data without complex computation. 
+    #
+    # Example of output for `kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running` below
+    # ````
+    # NAME                                        READY   STATUS              RESTARTS   AGE
+    # indonesia-jarkata-hybrid-554f7ffbc7-xq9bs   0/1     ContainerCreating   0          0s
+    # germany-frankfurt-router-ds5dn              1/1     Running             0          46d
+    # default-hybrid-594c59677b-rx5rt             1/1     Running             0          4m
+    # default-hybrid-594c59677b-z26st             0/1     Terminating         0          53m
+    # ```
+    #
+    # After piping, and filtering for "Running", and the first collumn, this will provide the following
+    #
+    # ```
+    # germany-frankfurt-router-ds5dn
+    # default-hybrid-594c59677b-rx5rt
+    # ```
+    POD_IDS=$(kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running 2>&1 | grep Running | awk '{ print $1 }')
+    PROCESS_POD_IDS "$POD_IDS"
 }

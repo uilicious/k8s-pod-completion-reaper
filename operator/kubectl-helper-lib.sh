@@ -108,7 +108,7 @@ function PROCESS_POD_OBJ_JSON {
     # POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.startTime')
 
     # Lets get the pod container start time
-    POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -rn '.status.containerStatuses[0].state.running.startedAt')
+    POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].state.running.startedAt')
 
     # Lets skip pod who does not have a start datetime (not eligible for termination)
     # Skip if null
@@ -121,7 +121,7 @@ function PROCESS_POD_OBJ_JSON {
     ## 
 
     # Lets check if there was a restart previously, and terminate it 
-    RESTART_COUNT=$(echo "$POD_OBJ_JSON" | jq -rn '.status.containerStatuses[0].restartCount')
+    RESTART_COUNT=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].restartCount')
 
     # Handle termination based on RESTART_COUNT
     if [[ "$RESTART_COUNT" -gt "0" ]]; then
@@ -157,8 +157,8 @@ function PROCESS_POD_OBJ_JSON {
         ## 
         
         if [[ "$KUBECTL_APPLY_ON_UNHEALTHY_NODES" == "true" ]]; then
-            STARTED_STATUS=$(echo "$POD_OBJ_JSON" | jq -rn '.status.containerStatuses[0].started')
-            READY_STATUS=$(echo "$POD_OBJ_JSON" | jq -rn '.status.containerStatuses[0].ready')
+            STARTED_STATUS=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].started')
+            READY_STATUS=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].ready')
 
             # Terminate any container in "unhealthy" state
             if [[ "$STARTED_STATUS" == "true" ]]; then
@@ -243,8 +243,12 @@ function PROCESS_POD_IDS {
     # For each ID lets process it
     for POD_ID in "${POD_ID_ARRAY[@]}"
     do
+        if [[ "$DEBUG" == "true" ]]; then
+            echo "[DEBUG:PROCESS_POD_IDS] - processing ${POD_ID}"
+        fi
+
         # Get the POD_OBJ_JSON
-        POD_OBJ_JSON=$(kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running --field-selector=metadata.name=$POD_ID -o json 2>&1 | jq -rn '.items[0]')
+        POD_OBJ_JSON=$(kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running --field-selector=metadata.name=$POD_ID -o json 2>&1 | jq -r '.items.[0]')
         
         # Process the pod obj
         if [[ "$POD_OBJ_JSON" != "null" ]]; then
@@ -287,5 +291,5 @@ function PROCESS_KUBECTL_OPERATOR {
     # default-hybrid-594c59677b-rx5rt
     # ```
     POD_IDS=$(kubectl get pods --namespace="$NAMESPACE" --field-selector=status.phase=Running 2>&1 | grep Running | awk '{ print $1 }')
-    PROCESS_POD_IDS "$POD_IDS"
+    PROCESS_POD_IDS "${POD_IDS}"
 }

@@ -87,12 +87,30 @@ function PROCESS_POD_OBJ_JSON {
         fi
     fi
 
+    ##
+    ## Check that the pod deifinition is valid, with an overall startTime
+    ## 
+
     # Lets get the pod start time
     POD_START_DATETIME=$(echo "$POD_OBJ_JSON" | jq -r '.status.startTime')
 
     # Lets skip pod who does not have a start datetime (not eligible for termination)
     # Skip if null
     if [[ -z "$POD_START_DATETIME" ]] || [[ "$POD_START_DATETIME" == "null" ]]; then
+        return 0
+    fi
+
+    ##
+    ## Terminate because of restart count
+    ## 
+
+    # Lets check if there was a restart previously, and terminate it 
+    RESTART_COUNT=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].restartCount')
+
+    # Handle termination based on RESTART_COUNT
+    if [[ "$RESTART_COUNT" -gt "0" ]]; then
+        # Lets restart and terminate
+        DELETE_POD_CMD "$POD_FULLNAME" "it has restarted $RESTART_COUNT times previously"
         return 0
     fi
 
@@ -117,20 +135,6 @@ function PROCESS_POD_OBJ_JSON {
                 echo "[DEBUG:$OPERATOR_TYPE] - skipping ${POD_FULLNAME} as its newer then KUBECTL_MIN_AGE_IN_MINUTES"
             fi
             return 0;
-        fi
-
-        ##
-        ## Terminate because of restart count
-        ## 
-
-        # Lets check if there was a restart previously, and terminate it 
-        RESTART_COUNT=$(echo "$POD_OBJ_JSON" | jq -r '.status.containerStatuses[0].restartCount')
-
-        # Handle termination based on RESTART_COUNT
-        if [[ "$RESTART_COUNT" -gt "0" ]]; then
-            # Lets restart and terminate
-            DELETE_POD_CMD "$POD_FULLNAME" "it has restarted $RESTART_COUNT times previously"
-            return 0
         fi
 
         ##

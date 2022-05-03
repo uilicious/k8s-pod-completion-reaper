@@ -1,7 +1,7 @@
 # ignore debug logs
 logs.txt
 
-shell-operator-rbac.yaml
+*.yaml
 
 # Ignore common hidden / OS files
 .*

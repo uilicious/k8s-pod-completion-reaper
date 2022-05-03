@@ -78,7 +78,7 @@ else
   else
     # TARGETPOD does not match, we should skip this event
     if [ "$DEBUG" = "true" ] ; then
-      echo "DEBUG - skipping ${POD_NAME} as it does not match TARGETPOD regex : ${TARGETPOD}"
+      echo "[DEBUG] Skipping ${POD_NAME} as it does not match TARGETPOD regex:${TARGETPOD}"
     fi
     exit 0
   fi
@@ -107,7 +107,7 @@ if [[ "$APPLY_ON_EXITCODE_0" != "true" ]]; then
   if [[ "$TERMINATED_EXITCODE" == "0" ]]; then
     # DEBUG log the container that was skipped
     if [ "$DEBUG" = "true" ] ; then
-      echo "DEBUG - skipping ${podName} with exitcode 0 ( APPLY_ON_EXITCODE_0 != true )"
+      echo "[DEBUG] Skipping ${POD_NAME} with exitcode 0 (APPLY_ON_EXITCODE_0 != true)"
     fi
     exit 0
   fi
@@ -119,12 +119,12 @@ fi
 
 # Lets handle debug mode
 if [ "$DEBUG" = "true" ] ; then
-	echo "DEBUG - would have terminated ${POD_NAME} which completed with exitcode ${TERMINATED_EXITCODE} : ${TERMINATED_REASON}"
+	echo "[DEBUG] Would have terminated ${POD_NAME} which completed with exitcode ${TERMINATED_EXITCODE}:${TERMINATED_REASON}"
 	exit 0
 fi
 
 # Lets perform the termination event
-echo "ACTION - terminating ${POD_NAME} which completed with exitcode ${TERMINATED_EXITCODE} : ${TERMINATED_REASON}"
+echo "[ACTION] Terminating ${POD_NAME} which completed with exitcode ${TERMINATED_EXITCODE}:${TERMINATED_REASON}"
 kubectl delete pod --wait=false $POD_NAME 
 
 #-----------------------------------------------------------------------------------------

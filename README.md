@@ -32,6 +32,9 @@ Alternatively, you should really test and understand how this reaper operator wo
 | TARGETPOD                        | -             | Regex expression for matching POD, to apply the k8s-pod-completion-reaper to, if blank, matches all containers in the namespace                       |
 | APPLY_ON_EXITCODE_0              | true          | If true, Terminate and remove the pods, even if the exit code was 0 (aka, it exited without error)                                                    |
 | DEBUG                            | false         | If true, perform no action and logs it instead                                                                                                        |
+| LOG_PROXY_HOOK_JSON              | false         | Delegate hook stdout/ stderr JSON logging to the hooks and act as a proxy that adds some extra fields.                                                |
+| LOG_TYPE                         | text          | Logging formatter type: json, text or color.                                                                                                          |
+| LOG_NO_TIME                      | true          | Disable timestamp logging if flag is present.                                                                                                         |
 | LOG_LEVEL                        | error         | Log level, of shell-operator, use either "debug","info" or "error"                                                                                    |
 | SHELL_OPERATOR_ENABLE            | true          | Enable the use of the main shell-operator workflow, which would react quicker in a "live" manner                                                      |
 | KUBECTL_FALLBACK_ENABLE          | true          | Enable the inbuilt kubectl fallback behaviour, which triggers on a perodic basis                                                                      |
@@ -147,3 +150,7 @@ object provided by ".[0].object", you may want to refer to either an existing cl
 or alternatively [./notes/example-pod.yaml](./notes/example-pod.yaml).
 
 This uses the APACHE license, to ensure its compatible with the shell-operator its built on.
+
+# Regarding LOG_PROXY_HOOK_JSON
+Doesn't seem to work ? See link below
+https://github.com/flant/shell-operator/pull/383

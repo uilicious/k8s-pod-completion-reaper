@@ -20,15 +20,16 @@
 if [[ $1 == "--config" ]] ; then
 cat <<EOF
 configVersion: v1
-#Maybe it's wise to prevent the reaper to terminate 10 pods in 1s and let those queue instead ?
-settings:
-  executionMinInterval: 2s
-  executionBurst: 1
+# Maybe it's wise to prevent the reaper to terminate 100 pods ate the same time.
+# Uncomment the below settings in this have any relevance for your situation.
+#settings:
+#  executionMinInterval: 1s
+#  executionBurst: 10
 kubernetes:
 - name: OnTerminateState
   apiVersion: v1
   kind: Pod
-  #Give every shell-operator a different queue name instead of default "main" because i'm paranoid
+  #Gives every shell-operator a different queue name instead of default "main" because i'm paranoid
   queue: "PodReaping${EPOCHSECONDS}"
   # 
   # Because the modified event is extreamly verbose,

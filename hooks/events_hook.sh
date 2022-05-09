@@ -133,5 +133,5 @@ fi
 
 # Lets perform the termination event
 echo "[ACTION] Terminating ${POD_NAME} which completed with exitcode ${TERMINATED_EXITCODE}:${TERMINATED_REASON}"
-kubectl delete pod --wait=false --namespace=${NAMESPACE} ${POD_NAME} 
+kubectl delete pod --wait=false  ${POD_NAME} 
 #-----------------------------------------------------------------------------------------

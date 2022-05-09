@@ -56,7 +56,7 @@ ENV DEBUG="false"
 ENV LOG_PROXY_HOOK_JSON="false"
 
 #
-#Logging formatter type: json, text or color.
+# Logging formatter type: json, text or color.
 #
 # default is json
 #

@@ -30,7 +30,7 @@ kubernetes:
   apiVersion: v1
   kind: Pod
   #Gives every shell-operator a different queue name instead of default "main" because i'm paranoid
-  queue: "PodReaping${EPOCHSECONDS}"
+  #queue: "PodReaping${EPOCHSECONDS}"
   # 
   # Because the modified event is extreamly verbose,
   # (especially with healthcheck, which updates it every X seconds)

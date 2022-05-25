@@ -39,7 +39,11 @@ kubernetes:
   #
   executeHookOnEvent:
   - Modified
-  # 
+  #
+  # if true, Shell-operator skips the hook execution errors. 
+  # If false or the parameter is not set, the hook is restarted after a 5 seconds delay in case of an error.
+  allowFailure: true
+  #
   # Limit filtering to the namespace
   #
   namespace:
